@@ -1,5 +1,7 @@
-#include <stdlib.h>
+#include <cstdlib>
+#include <vector>
 #include "p6/p6.h"
+
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
 
@@ -22,9 +24,18 @@ int main(int argc, char* argv[])
     ctx.update = [&]() {
         ctx.background(p6::NamedColor::Blue);
         ctx.circle(
-            p6::Center{ctx.mouse()},
-            p6::Radius{0.2f}
+            // p6::Center{ctx.mouse()},
+            // p6::Center{0.5f, 0.5f},
+            // p6::Radius{0.2f}
+            // p6::FullScreen{}
         );
+        ctx.square(
+            p6::FullScreen{}
+        );
+        p6::Point2D p1((ctx.aspect_ratio() + (-ctx.aspect_ratio())) / 2, 1);
+        p6::Point2D p2(ctx.aspect_ratio() / 2, -1);
+        p6::Point2D p3(-ctx.aspect_ratio() / 2, -1);
+        ctx.triangle(p1, p2, p3);
     };
 
     // Should be done last. It starts the infinite loop.

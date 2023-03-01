@@ -40,6 +40,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(doctest)
 target_link_libraries(${PROJECT_NAME} PRIVATE doctest::doctest)
 
-# ---Add p6 library---
-add_subdirectory(lib/p6)
+include(FetchContent)
+FetchContent_Declare(
+    p6
+    GIT_REPOSITORY https://github.com/JulesFouchy/p6
+    GIT_TAG b9e6366e1198abdd7bc835e6125f9ff5b89a75b8
+)
+FetchContent_MakeAvailable(p6)
 target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
+# ---Add p6 library---
+# add_subdirectory(lib/p6)
+# target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
