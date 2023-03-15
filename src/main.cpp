@@ -1,9 +1,25 @@
 #include <cstdlib>
 #include <vector>
+#include "Boid.hpp"
+#include "glm/fwd.hpp"
 #include "p6/p6.h"
 
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
+
+std::vector<Boid> create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit)
+{
+    std::vector<Boid> boids;
+    for (int i = 0; i < num_boids; i++)
+    {
+        glm::vec2 position = glm::vec2(p6::random::number(left_limit, right_limit), p6::random::number(bottom_limit, top_limit));
+        glm::vec2 velocity = glm::vec2(p6::random::number(-0.01f, 0.01f), p6::random::number(-0.01f, 0.01f));
+        float     radius   = p6::random::number(0.1f, 0.2f);
+        Boid      boid(position, velocity, radius, top_limit, bottom_limit, left_limit, right_limit);
+        boids.push_back(boid);
+    }
+    return boids;
+}
 
 int main(int argc, char* argv[])
 {
@@ -20,22 +36,24 @@ int main(int argc, char* argv[])
     auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
     ctx.maximize_window();
 
+    float left_limit   = -ctx.aspect_ratio();
+    float right_limit  = ctx.aspect_ratio();
+    float top_limit    = 1;
+    float bottom_limit = -1;
+
+    std::vector<Boid> boids = create_boids(10, top_limit, bottom_limit, left_limit, right_limit);
+
     // Declare your infinite update loop.
     ctx.update = [&]() {
         ctx.background(p6::NamedColor::Blue);
-        ctx.circle(
-            // p6::Center{ctx.mouse()},
-            // p6::Center{0.5f, 0.5f},
-            // p6::Radius{0.2f}
-            // p6::FullScreen{}
-        );
-        ctx.square(
-            p6::FullScreen{}
-        );
-        p6::Point2D p1((ctx.aspect_ratio() + (-ctx.aspect_ratio())) / 2, 1);
-        p6::Point2D p2(ctx.aspect_ratio() / 2, -1);
-        p6::Point2D p3(-ctx.aspect_ratio() / 2, -1);
-        ctx.triangle(p1, p2, p3);
+        for (auto& boid : boids)
+        {
+            boid.draw(ctx);
+            if (boid.borders_bool())
+            {
+                boid.position();
+            }
+        }
     };
 
     // Should be done last. It starts the infinite loop.
