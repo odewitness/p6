@@ -52,3 +52,17 @@ bool Boid::borders_bool()
     }
     return out_of_border;
 }
+
+std::vector<Boid> Boid::create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit)
+{
+    std::vector<Boid> boids;
+    for (int i = 0; i < num_boids; i++)
+    {
+        glm::vec2 position = glm::vec2(p6::random::number(left_limit, right_limit), p6::random::number(bottom_limit, top_limit));
+        glm::vec2 velocity = glm::vec2(p6::random::number(-0.01f, 0.01f), p6::random::number(-0.01f, 0.01f));
+        float     radius   = p6::random::number(0.1f, 0.2f);
+        Boid      boid(position, velocity, radius, top_limit, bottom_limit, left_limit, right_limit);
+        boids.push_back(boid);
+    }
+    return boids;
+}

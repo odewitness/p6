@@ -7,20 +7,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest/doctest.h"
 
-std::vector<Boid> create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit)
-{
-    std::vector<Boid> boids;
-    for (int i = 0; i < num_boids; i++)
-    {
-        glm::vec2 position = glm::vec2(p6::random::number(left_limit, right_limit), p6::random::number(bottom_limit, top_limit));
-        glm::vec2 velocity = glm::vec2(p6::random::number(-0.01f, 0.01f), p6::random::number(-0.01f, 0.01f));
-        float     radius   = p6::random::number(0.1f, 0.2f);
-        Boid      boid(position, velocity, radius, top_limit, bottom_limit, left_limit, right_limit);
-        boids.push_back(boid);
-    }
-    return boids;
-}
-
 int main(int argc, char* argv[])
 {
     { // Run the tests
@@ -41,7 +27,7 @@ int main(int argc, char* argv[])
     float top_limit    = 1;
     float bottom_limit = -1;
 
-    std::vector<Boid> boids = create_boids(10, top_limit, bottom_limit, left_limit, right_limit);
+    std::vector<Boid> boids = Boid::create_boids(10, top_limit, bottom_limit, left_limit, right_limit);
 
     // Declare your infinite update loop.
     ctx.update = [&]() {
