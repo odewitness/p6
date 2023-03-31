@@ -21,13 +21,24 @@ int main(int argc, char* argv[])
     // Actual app
     auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
     ctx.maximize_window();
-
+    //////// TODO faire ue fonction ?
     float left_limit   = -ctx.aspect_ratio();
     float right_limit  = ctx.aspect_ratio();
     float top_limit    = 1;
     float bottom_limit = -1;
 
-    std::vector<Boid> boids = Boid::create_boids(10, top_limit, bottom_limit, left_limit, right_limit);
+    std::vector<Boid>
+        boids = Boid::create_boids(10, top_limit, bottom_limit, left_limit, right_limit);
+
+    float separation_distance = 1.f;
+    float separation_strength = 0.04f;
+    //////////
+
+    ctx.imgui = [&]() {
+        ImGui::Begin("Parameters");
+        ImGui::SliderFloat("Separation", &separation_strength, 0.0f, 0.1f);
+        ImGui::End();
+    };
 
     // Declare your infinite update loop.
     ctx.update = [&]() {
@@ -35,9 +46,11 @@ int main(int argc, char* argv[])
         for (auto& boid : boids)
         {
             boid.draw(ctx);
+            boid.movement();
             if (boid.borders_bool())
             {
-                boid.position();
+                boid.separation(boids, separation_distance, separation_strength);
+                boid.movement();
             }
         }
     };
