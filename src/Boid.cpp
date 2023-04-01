@@ -60,35 +60,6 @@ std::vector<Boid> Boid::create_boids(int num_boids, float top_limit, float botto
     return boids;
 }
 
-glm::vec2 Boid::get_vitesse() const
-{
-    return m_vitesse;
-}
-
-void Boid::set_vitesse(const glm::vec2& vitesse)
-{
-    m_vitesse = vitesse;
-}
-
-glm::vec2 Boid::get_position() const
-{
-    return m_position;
-}
-
-void Boid::set_position(const glm::vec2& position)
-{
-    m_position = position;
-}
-
-float Boid::get_taille() const
-{
-    return m_taille;
-}
-void Boid::set_taille(const float& taille)
-{
-    m_taille = taille;
-}
-
 float Boid::distance_between_boids(Boid boid1, Boid boid2)
 {
     return glm::distance(boid1.m_position, boid2.m_position);

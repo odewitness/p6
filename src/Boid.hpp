@@ -21,13 +21,6 @@ public:
     Boid();
     Boid(glm::vec2 position, glm::vec2 direction, glm::vec2 vitesse, float taille, float m_top_limit, float m_bottom_limit, float m_left_limit, float m_right_limit);
 
-    glm::vec2 get_vitesse() const;
-    void      set_vitesse(const glm::vec2& vitesse);
-    glm::vec2 get_position() const;
-    void      set_position(const glm::vec2& position);
-    float     get_taille() const;
-    void      set_taille(const float& taille);
-
     void                     draw(p6::Context& ctx);
     void                     movement();
     bool                     borders_bool(); // todo erommer pour rque ce soit clair si ça nous dutdit qu'on est dehor ou dedans
