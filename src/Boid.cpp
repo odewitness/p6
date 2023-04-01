@@ -2,9 +2,9 @@
 #include "glm/fwd.hpp"
 
 Boid::Boid(glm::vec2 position, glm::vec2 direction, float vitesse, float taille, float top_limit, float bottom_limit, float left_limit, float right_limit)
-    : m_position(glm::vec2(position)), m_direction(glm::vec2(direction)), m_vitesse(vitesse), m_taille(taille), m_top_limit(top_limit), m_bottom_limit(bottom_limit), m_left_limit(left_limit), m_right_limit(right_limit) {}
+    : m_position(glm::vec2(position)), m_direction(glm::vec2(direction)), m_vitesse(vitesse), m_taille(taille), m_limite_haut(top_limit), m_limite_bas(bottom_limit), m_limite_gauche(left_limit), m_limite_droite(right_limit) {}
 
-void Boid::draw(p6::Context& ctx)
+void Boid::dessin(p6::Context& ctx)
 {
     // ctx.square(p6::Center{m_position}, p6::Radius{m_taille}, p6::Rotation{0.0_radians});
     ctx.equilateral_triangle(
@@ -14,50 +14,50 @@ void Boid::draw(p6::Context& ctx)
     );
 }
 
-void Boid::movement()
+void Boid::mouvement()
 {
     m_position += m_direction * m_vitesse;
 }
 
-bool Boid::borders_bool()
+bool Boid::rebondir_si_hors_limite()
 {
-    bool  out_of_border = true;
-    float bounce_factor = 0.5f;
+    bool  hors_limite = true;
+    float rebond      = 0.5f;
 
-    if (m_position.y > m_top_limit - m_taille)
+    if (m_position.y > m_limite_haut - m_taille)
     {
-        m_position.y  = m_top_limit - m_taille;
-        m_direction.y = -m_direction.y * bounce_factor;
-        m_direction.x += bounce_factor * (1 - abs(m_direction.y));
-        out_of_border = false;
+        m_position.y  = m_limite_haut - m_taille;
+        m_direction.y = -m_direction.y * rebond;
+        m_direction.x += rebond * (1 - abs(m_direction.y));
+        hors_limite = false;
     }
-    else if (m_position.y < m_bottom_limit + m_taille)
+    else if (m_position.y < m_limite_bas + m_taille)
     {
-        m_position.y  = m_bottom_limit + m_taille;
-        m_direction.y = -m_direction.y * bounce_factor;
-        m_direction.x -= bounce_factor * (1 - abs(m_direction.y));
-        out_of_border = false;
+        m_position.y  = m_limite_bas + m_taille;
+        m_direction.y = -m_direction.y * rebond;
+        m_direction.x -= rebond * (1 - abs(m_direction.y));
+        hors_limite = false;
     }
-    if (m_position.x > m_right_limit - m_taille)
+    if (m_position.x > m_limite_droite - m_taille)
     {
-        m_position.x  = m_right_limit - m_taille;
-        m_direction.x = -m_direction.x * bounce_factor;
-        m_direction.y += bounce_factor * (1 - abs(m_direction.x));
-        out_of_border = false;
+        m_position.x  = m_limite_droite - m_taille;
+        m_direction.x = -m_direction.x * rebond;
+        m_direction.y += rebond * (1 - abs(m_direction.x));
+        hors_limite = false;
     }
-    else if (m_position.x < m_left_limit + m_taille)
+    else if (m_position.x < m_limite_gauche + m_taille)
     {
-        m_position.x  = m_left_limit + m_taille;
-        m_direction.x = -m_direction.x * bounce_factor;
-        m_direction.y -= bounce_factor * (1 - abs(m_direction.x));
-        out_of_border = false;
+        m_position.x  = m_limite_gauche + m_taille;
+        m_direction.x = -m_direction.x * rebond;
+        m_direction.y -= rebond * (1 - abs(m_direction.x));
+        hors_limite = false;
     }
 
     m_direction = glm::normalize(m_direction);
-    return out_of_border;
+    return hors_limite;
 }
 
-std::vector<Boid> Boid::create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit)
+std::vector<Boid> Boid::creation_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit)
 {
     std::vector<Boid> boids;
     for (int i = 0; i < num_boids; i++)
@@ -103,7 +103,7 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, co
     }
 }
 
-void Boid::alignment(std::vector<Boid>& boids, const float& alignment_distance, const float& alignment_strength)
+void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_strength)
 {
     glm::vec2 average_direction(0.0f);
     int       count = 0;
@@ -116,7 +116,7 @@ void Boid::alignment(std::vector<Boid>& boids, const float& alignment_distance, 
         }
 
         float distance = glm::distance(m_position, boid.m_position);
-        if (distance < alignment_distance)
+        if (distance < alignement_distance)
         {
             average_direction += boid.m_direction;
             count++;
@@ -126,7 +126,7 @@ void Boid::alignment(std::vector<Boid>& boids, const float& alignment_distance, 
     if (count > 0)
     {
         average_direction /= static_cast<float>(count);
-        average_direction = glm::normalize(average_direction) * alignment_strength;
+        average_direction = glm::normalize(average_direction) * alignement_strength;
         m_direction += average_direction;
         m_direction = glm::normalize(m_direction);
     }

@@ -12,22 +12,21 @@ private:
     glm::vec2 m_direction;
     float     m_vitesse;
     float     m_taille;
-    float     m_top_limit;
-    float     m_bottom_limit;
-    float     m_left_limit;
-    float     m_right_limit;
+    float     m_limite_haut;
+    float     m_limite_bas;
+    float     m_limite_gauche;
+    float     m_limite_droite;
 
 public:
     Boid();
-    Boid(glm::vec2 position, glm::vec2 direction, float vitesse, float taille, float m_top_limit, float m_bottom_limit, float m_left_limit, float m_right_limit);
+    Boid(glm::vec2 position, glm::vec2 direction, float vitesse, float taille, float m_limite_haut, float m_limite_bas, float m_limite_gauche, float m_limite_droite);
 
-    void                     draw(p6::Context& ctx);
-    void                     movement();
-    bool                     borders_bool(); // todo erommer pour rque ce soit clair si ça nous dutdit qu'on est dehor ou dedans
-    void                     avoid_walls(const glm::vec2& min_window_size, const glm::vec2& max_window_size, const float& wall_distance);
-    static std::vector<Boid> create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit);
+    void                     dessin(p6::Context& ctx);
+    void                     mouvement();
+    bool                     rebondir_si_hors_limite();
+    static std::vector<Boid> creation_boids(int num_boids, float top_limit, float limite_bas, float limite_gauche, float limite_droite);
     void                     cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force);
-    void                     alignment(std::vector<Boid>& boids, const float& alignment_distance, const float& alignment_force);
+    void                     alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force);
     void                     separation(const std::vector<Boid>& boids, float separation_distance, float separation_force);
 };
 

@@ -22,18 +22,18 @@ int main(int argc, char* argv[])
     auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
     ctx.maximize_window();
     //////// TODO faire ue fonction ?
-    float left_limit   = -ctx.aspect_ratio();
-    float right_limit  = ctx.aspect_ratio();
-    float top_limit    = 1;
-    float bottom_limit = -1;
+    float limite_gauche = -ctx.aspect_ratio();
+    float limite_droite = ctx.aspect_ratio();
+    float limite_haut   = 1;
+    float limite_bas    = -1;
 
     std::vector<Boid>
-        boids = Boid::create_boids(50, top_limit, bottom_limit, left_limit, right_limit);
+        boids = Boid::creation_boids(50, limite_haut, limite_bas, limite_gauche, limite_droite);
 
     float cohesion_force      = 0.f;
     float cohesion_distance   = 0.5f;
-    float alignment_force     = 0.f;
-    float alignment_distance  = 0.5f;
+    float alignement_force    = 0.f;
+    float alignement_distance = 0.5f;
     float separation_force    = 0.f;
     float separation_distance = 0.5f;
 
@@ -45,8 +45,8 @@ int main(int argc, char* argv[])
         ImGui::Begin("Parameters");
         ImGui::SliderFloat("Cohesion", &cohesion_force, 0.f, 0.1f);
         ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.f, 2.0f);
-        ImGui::SliderFloat("Alignment", &alignment_force, 0.0f, 0.1f);
-        ImGui::SliderFloat("Alignment Distance", &alignment_distance, 0.0f, 2.0f);
+        ImGui::SliderFloat("alignement", &alignement_force, 0.0f, 0.1f);
+        ImGui::SliderFloat("alignement Distance", &alignement_distance, 0.0f, 2.0f);
         ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
         ImGui::End();
@@ -57,14 +57,14 @@ int main(int argc, char* argv[])
         ctx.background(p6::NamedColor::Blue);
         for (auto& boid : boids)
         {
-            boid.draw(ctx);
-            boid.movement();
-            if (boid.borders_bool())
+            boid.dessin(ctx);
+            boid.mouvement();
+            if (boid.rebondir_si_hors_limite())
             {
                 boid.cohesion(boids, cohesion_distance, cohesion_force);
-                boid.alignment(boids, alignment_distance, alignment_force);
+                boid.alignement(boids, alignement_distance, alignement_force);
                 boid.separation(boids, separation_distance, separation_force);
-                boid.movement();
+                boid.mouvement();
             }
         }
     };
