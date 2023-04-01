@@ -26,9 +26,10 @@ int main(int argc, char* argv[])
     float limite_droite = ctx.aspect_ratio();
     float limite_haut   = 1;
     float limite_bas    = -1;
+    int   nombre_boids  = 50;
 
     std::vector<Boid>
-        boids = Boid::creation_boids(50, limite_haut, limite_bas, limite_gauche, limite_droite);
+        boids = Boid::creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite);
 
     float cohesion_force      = 0.f;
     float cohesion_distance   = 0.5f;
@@ -43,18 +44,33 @@ int main(int argc, char* argv[])
 
     ctx.imgui = [&]() {
         ImGui::Begin("Parameters");
+        ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
+
         ImGui::SliderFloat("Cohesion", &cohesion_force, 0.f, 0.1f);
         ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.f, 2.0f);
-        ImGui::SliderFloat("alignement", &alignement_force, 0.0f, 0.1f);
-        ImGui::SliderFloat("alignement Distance", &alignement_distance, 0.0f, 2.0f);
+        ImGui::SliderFloat("Alignement", &alignement_force, 0.0f, 0.1f);
+        ImGui::SliderFloat("Alignement Distance", &alignement_distance, 0.0f, 2.0f);
         ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
         ImGui::End();
+
+        if (boids.size() < nombre_boids)
+        {
+            int  count_to_add = nombre_boids - boids.size();
+            auto new_boids    = Boid::creation_boids(count_to_add, limite_haut, limite_bas, limite_gauche, limite_droite);
+            boids.insert(boids.end(), new_boids.begin(), new_boids.end());
+        }
+        else if (boids.size() > nombre_boids)
+        {
+            int count_to_remove = boids.size() - nombre_boids;
+            boids.erase(boids.end() - count_to_remove, boids.end());
+        }
     };
 
     // Declare your infinite update loop.
     ctx.update = [&]() {
-        ctx.background(p6::NamedColor::Blue);
+        ctx.background({0.86f, 0.81f, 0.92f});
+
         for (auto& boid : boids)
         {
             boid.dessin(ctx);

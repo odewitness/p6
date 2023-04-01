@@ -7,6 +7,9 @@ Boid::Boid(glm::vec2 position, glm::vec2 direction, float vitesse, float taille,
 void Boid::dessin(p6::Context& ctx)
 {
     // ctx.square(p6::Center{m_position}, p6::Radius{m_taille}, p6::Rotation{0.0_radians});
+    ctx.fill = {0.6627451, 0.59215686, 0.8745098};
+
+    ctx.stroke = {0.21960784, 0.22352941, 0.34509804};
     ctx.equilateral_triangle(
         p6::Center{m_position},
         p6::Radius{m_taille},
