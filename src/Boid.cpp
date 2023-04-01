@@ -53,7 +53,8 @@ std::vector<Boid> Boid::create_boids(int num_boids, float top_limit, float botto
         glm::vec2 vitesse   = glm::vec2(p6::random::number(-0.01f, 0.01f), p6::random::number(-0.01f, 0.01f));
         glm::vec2 direction = glm::vec2(p6::random::number(0.5f, 1.00f), p6::random::number(0.01f, 1.0f));
         float     taille    = p6::random::number(0.1f, 0.2f);
-        Boid      boid(position, direction, vitesse, taille, top_limit, bottom_limit, left_limit, right_limit);
+        // float taille = 0.2f;
+        Boid boid(position, direction, vitesse, taille, top_limit, bottom_limit, left_limit, right_limit);
         boids.push_back(boid);
     }
     return boids;
@@ -93,10 +94,11 @@ float Boid::distance_between_boids(Boid boid1, Boid boid2)
     return glm::distance(boid1.m_position, boid2.m_position);
 }
 
-void Boid::separation(std::vector<Boid>& boids, const float& separation_distance, const float& separation_strength)
+void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force)
 {
-    glm::vec2 separation(0.0f);
+    glm::vec2 centre_boids(0.0f);
     int       count = 0;
+
     for (const auto& boid : boids)
     {
         if (&boid == this)
@@ -104,19 +106,20 @@ void Boid::separation(std::vector<Boid>& boids, const float& separation_distance
             continue;
         }
 
-        const float distance = glm::distance(m_position, boid.m_position);
-        if (distance < separation_distance)
+        float distance = glm::distance(m_position, boid.m_position);
+        if (distance < cohesion_distance)
         {
-            separation += (m_position - boid.m_position) / (distance * distance);
-            // separation += separation_strength * (m_position - boid.m_position);
+            centre_boids += boid.m_position;
             count++;
         }
     }
+
     if (count > 0)
     {
-        separation /= static_cast<float>(count);
-        separation = glm::normalize(separation) * separation_strength;
+        centre_boids /= static_cast<float>(count);
+        glm::vec2 cohesion_vector = centre_boids - m_position;
+        cohesion_vector           = glm::normalize(cohesion_vector) * cohesion_force;
+        m_direction += cohesion_vector;
+        m_direction = glm::normalize(m_direction);
     }
-    m_direction += separation;
-    m_direction = glm::normalize(m_direction);
 }

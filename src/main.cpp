@@ -30,13 +30,15 @@ int main(int argc, char* argv[])
     std::vector<Boid>
         boids = Boid::create_boids(10, top_limit, bottom_limit, left_limit, right_limit);
 
-    float separation_distance = 1.f;
-    float separation_strength = 0.04f;
+    float cohesion_force    = 0.f;
+    float cohesion_distance = 1.0f;
+
     //////////
 
     ctx.imgui = [&]() {
         ImGui::Begin("Parameters");
-        ImGui::SliderFloat("Separation", &separation_strength, 0.0f, 0.1f);
+        ImGui::SliderFloat("Cohesion", &cohesion_force, 0.0f, 0.5f);
+        ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.0f, 2.0f);
         ImGui::End();
     };
 
@@ -49,7 +51,7 @@ int main(int argc, char* argv[])
             boid.movement();
             if (boid.borders_bool())
             {
-                boid.separation(boids, separation_distance, separation_strength);
+                boid.cohesion(boids, cohesion_distance, cohesion_force);
                 boid.movement();
             }
         }
