@@ -131,3 +131,35 @@ void Boid::alignment(std::vector<Boid>& boids, const float& alignment_distance, 
         m_direction = glm::normalize(m_direction);
     }
 }
+
+void Boid::separation(const std::vector<Boid>& boids, float separation_distance, float separation_strength)
+{
+    glm::vec2 separation_force(0.0f, 0.0f);
+    int       neighbor_count = 0;
+
+    for (const auto& other_boid : boids)
+    {
+        if (&other_boid == this)
+        {
+            continue;
+        }
+
+        float distance = glm::distance(m_position, other_boid.m_position);
+
+        if (distance < separation_distance)
+        {
+            float separation_factor = (separation_distance - distance) / separation_distance;
+            separation_force += (m_position - other_boid.m_position) * separation_factor / (distance * distance);
+            neighbor_count++;
+        }
+    }
+
+    if (neighbor_count > 0)
+    {
+        separation_force /= static_cast<float>(neighbor_count);
+        separation_force = glm::normalize(separation_force) * separation_strength;
+    }
+
+    m_direction += separation_force;
+    m_direction = glm::normalize(m_direction);
+}

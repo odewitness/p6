@@ -30,10 +30,12 @@ int main(int argc, char* argv[])
     std::vector<Boid>
         boids = Boid::create_boids(50, top_limit, bottom_limit, left_limit, right_limit);
 
-    float cohesion_force     = 0.f;
-    float cohesion_distance  = 0.5f;
-    float alignment_force    = 0.f;
-    float alignment_distance = 0.5f;
+    float cohesion_force      = 0.f;
+    float cohesion_distance   = 0.5f;
+    float alignment_force     = 0.f;
+    float alignment_distance  = 0.5f;
+    float separation_force    = 0.f;
+    float separation_distance = 0.5f;
 
     glm::vec2 min_window_size{-ctx.aspect_ratio(), -1};
     glm::vec2 max_window_size{ctx.aspect_ratio(), 1};
@@ -45,6 +47,8 @@ int main(int argc, char* argv[])
         ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.f, 2.0f);
         ImGui::SliderFloat("Alignment", &alignment_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Alignment Distance", &alignment_distance, 0.0f, 2.0f);
+        ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
+        ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
         ImGui::End();
     };
 
@@ -59,6 +63,7 @@ int main(int argc, char* argv[])
             {
                 boid.cohesion(boids, cohesion_distance, cohesion_force);
                 boid.alignment(boids, alignment_distance, alignment_force);
+                boid.separation(boids, separation_distance, separation_force);
                 boid.movement();
             }
         }

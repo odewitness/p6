@@ -28,6 +28,7 @@ public:
     static std::vector<Boid> create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit);
     void                     cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force);
     void                     alignment(std::vector<Boid>& boids, const float& alignment_distance, const float& alignment_force);
+    void                     separation(const std::vector<Boid>& boids, float separation_distance, float separation_force);
 };
 
 #endif
