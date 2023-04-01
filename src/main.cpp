@@ -56,14 +56,14 @@ int main(int argc, char* argv[])
 
         if (boids.size() < nombre_boids)
         {
-            int  count_to_add = nombre_boids - boids.size();
-            auto new_boids    = Boid::creation_boids(count_to_add, limite_haut, limite_bas, limite_gauche, limite_droite);
-            boids.insert(boids.end(), new_boids.begin(), new_boids.end());
+            int  nombre_de_boids_a_ajouter = nombre_boids - boids.size();
+            auto nouveaux_boids            = Boid::creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite);
+            boids.insert(boids.end(), nouveaux_boids.begin(), nouveaux_boids.end());
         }
         else if (boids.size() > nombre_boids)
         {
-            int count_to_remove = boids.size() - nombre_boids;
-            boids.erase(boids.end() - count_to_remove, boids.end());
+            int nombre_de_boids_a_enlever = boids.size() - nombre_boids;
+            boids.erase(boids.end() - nombre_de_boids_a_enlever, boids.end());
         }
     };
 
