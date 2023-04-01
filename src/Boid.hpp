@@ -27,7 +27,6 @@ public:
     void                     avoid_walls(const glm::vec2& min_window_size, const glm::vec2& max_window_size, const float& wall_distance);
     static bool              neighbour_bool(const Boid& boid1, const Boid& boid2);
     static std::vector<Boid> create_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit);
-    static float             distance_between_boids(Boid boid1, Boid boid2);
     void                     cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force);
 };
 

@@ -60,11 +60,6 @@ std::vector<Boid> Boid::create_boids(int num_boids, float top_limit, float botto
     return boids;
 }
 
-float Boid::distance_between_boids(Boid boid1, Boid boid2)
-{
-    return glm::distance(boid1.m_position, boid2.m_position);
-}
-
 void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force)
 {
     glm::vec2 centre_boids(0.0f);
