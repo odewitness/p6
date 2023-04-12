@@ -21,17 +21,14 @@ int main(int argc, char* argv[])
     // Actual app
     auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
     ctx.maximize_window();
-    //////// TODO faire ue fonction ?
+
+    // Paramètres
     float limite_gauche = -ctx.aspect_ratio();
     float limite_droite = ctx.aspect_ratio();
     float limite_haut   = 1;
     float limite_bas    = -1;
     int   nombre_boids  = 50;
     float taille_boid   = 0.05f;
-    // float vitesse       = 0.002f;
-
-    std::vector<Boid>
-        boids = Boid::creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
 
     float cohesion_force      = 0.f;
     float cohesion_distance   = 0.5f;
@@ -40,26 +37,27 @@ int main(int argc, char* argv[])
     float separation_force    = 0.f;
     float separation_distance = 0.5f;
 
-    glm::vec2 min_window_size{-ctx.aspect_ratio(), -1};
-    glm::vec2 max_window_size{ctx.aspect_ratio(), 1};
-    //////////
+    std::vector<Boid>
+        boids = Boid::creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
 
+    // Paramètres IMGUI
     ctx.imgui = [&]() {
-        ImGui::Begin("Parameters");
+        ImGui::Begin("Paramètres");
         ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
-
+        ImGui::SliderFloat("Taille Boid", &taille_boid, 0.01f, 0.3f);
         ImGui::SliderFloat("Cohesion", &cohesion_force, 0.f, 0.1f);
         ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.f, 2.0f);
         ImGui::SliderFloat("Alignement", &alignement_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Alignement Distance", &alignement_distance, 0.0f, 2.0f);
         ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
-        ImGui::SliderFloat("Taille Boid", &taille_boid, 0.01f, 0.5f);
         ImGui::End();
 
+        // Gestion de la taille maximale des boids
         if (taille_boid > 0.2)
             nombre_boids %= 20;
 
+        // Ajout et suppression des boids
         int taille_boids_vecteur = boids.size(); // OK car taille max = 100 < taille max int
         if (taille_boids_vecteur < nombre_boids)
         {

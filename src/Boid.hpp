@@ -30,7 +30,7 @@ public:
     static std::vector<Boid> creation_boids(int num_boids, float limite_haut, float limite_bas, float limite_gauche, float limite_droite, float taille_boid);
     void                     cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force);
     void                     alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force);
-    void                     separation(const std::vector<Boid>& boids, float separation_distance, float separation_strength);
+    void                     separation(const std::vector<Boid>& boids, float separation_distance, float separation_force);
 };
 
 #endif
