@@ -1,9 +1,13 @@
 #include "Boid.hpp"
 #include "glm/fwd.hpp"
 
-Boid::Boid(glm::vec2 position, glm::vec2 direction, float vitesse, float taille, float top_limit, float bottom_limit, float left_limit, float right_limit)
-    : m_position(glm::vec2(position)), m_direction(glm::vec2(direction)), m_vitesse(vitesse), m_taille(taille), m_limite_haut(top_limit), m_limite_bas(bottom_limit), m_limite_gauche(left_limit), m_limite_droite(right_limit) {}
+Boid::Boid(std::pair<glm::vec2, glm::vec2> position_and_direction, float vitesse, float taille, float limite_haut, float limite_bas, float limite_gauche, float limite_droite)
+    : m_position(glm::vec2(position_and_direction.first)), m_direction(glm::vec2(position_and_direction.second)), m_vitesse(vitesse), m_taille(taille), m_limite_haut(limite_haut), m_limite_bas(limite_bas), m_limite_gauche(limite_gauche), m_limite_droite(limite_droite) {}
 
+void Boid::set_taille(float taille)
+{
+    m_taille = taille;
+}
 void Boid::dessin(p6::Context& ctx)
 {
     // ctx.square(p6::Center{m_position}, p6::Radius{m_taille}, p6::Rotation{0.0_radians});
@@ -60,17 +64,16 @@ bool Boid::rebondir_si_hors_limite()
     return hors_limite;
 }
 
-std::vector<Boid> Boid::creation_boids(int num_boids, float top_limit, float bottom_limit, float left_limit, float right_limit)
+std::vector<Boid> Boid::creation_boids(int num_boids, float limite_haut, float limite_bas, float limite_gauche, float limite_droite, float taille_boid)
 {
     std::vector<Boid> boids;
     for (int i = 0; i < num_boids; i++)
     {
-        glm::vec2 position  = glm::vec2(p6::random::number(left_limit, right_limit), p6::random::number(bottom_limit, top_limit));
+        glm::vec2 position  = glm::vec2(p6::random::number(limite_gauche, limite_droite), p6::random::number(limite_bas, limite_haut));
         float     vitesse   = p6::random::number(0.001f, 0.005f);
         glm::vec2 direction = glm::vec2(p6::random::number(0.5f, 1.00f), p6::random::number(0.01f, 1.0f));
         // float     taille    = p6::random::number(0.1f, 0.2f);
-        float taille = 0.05f;
-        Boid  boid(position, direction, vitesse, taille, top_limit, bottom_limit, left_limit, right_limit);
+        Boid boid(std::make_pair(position, direction), vitesse, taille_boid, limite_haut, limite_bas, limite_gauche, limite_droite);
         boids.push_back(boid);
     }
     return boids;
@@ -106,7 +109,7 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, co
     }
 }
 
-void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_strength)
+void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force)
 {
     glm::vec2 average_direction(0.0f);
     int       count = 0;
@@ -129,7 +132,7 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance
     if (count > 0)
     {
         average_direction /= static_cast<float>(count);
-        average_direction = glm::normalize(average_direction) * alignement_strength;
+        average_direction = glm::normalize(average_direction) * alignement_force;
         m_direction += average_direction;
         m_direction = glm::normalize(m_direction);
     }

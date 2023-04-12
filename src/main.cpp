@@ -27,9 +27,11 @@ int main(int argc, char* argv[])
     float limite_haut   = 1;
     float limite_bas    = -1;
     int   nombre_boids  = 50;
+    float taille_boid   = 0.05f;
+    // float vitesse       = 0.002f;
 
     std::vector<Boid>
-        boids = Boid::creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite);
+        boids = Boid::creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
 
     float cohesion_force      = 0.f;
     float cohesion_distance   = 0.5f;
@@ -52,17 +54,22 @@ int main(int argc, char* argv[])
         ImGui::SliderFloat("Alignement Distance", &alignement_distance, 0.0f, 2.0f);
         ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
+        ImGui::SliderFloat("Taille Boid", &taille_boid, 0.01f, 0.5f);
         ImGui::End();
 
-        if (boids.size() < nombre_boids)
+        if (taille_boid > 0.2)
+            nombre_boids %= 20;
+
+        int taille_boids_vecteur = boids.size(); // OK car taille max = 100 < taille max int
+        if (taille_boids_vecteur < nombre_boids)
         {
-            int  nombre_de_boids_a_ajouter = nombre_boids - boids.size();
-            auto nouveaux_boids            = Boid::creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite);
+            int  nombre_de_boids_a_ajouter = nombre_boids - taille_boids_vecteur;
+            auto nouveaux_boids            = Boid::creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
             boids.insert(boids.end(), nouveaux_boids.begin(), nouveaux_boids.end());
         }
-        else if (boids.size() > nombre_boids)
+        else if (taille_boids_vecteur > nombre_boids)
         {
-            int nombre_de_boids_a_enlever = boids.size() - nombre_boids;
+            int nombre_de_boids_a_enlever = taille_boids_vecteur - nombre_boids;
             boids.erase(boids.end() - nombre_de_boids_a_enlever, boids.end());
         }
     };
@@ -73,6 +80,7 @@ int main(int argc, char* argv[])
 
         for (auto& boid : boids)
         {
+            boid.set_taille(taille_boid);
             boid.dessin(ctx);
             boid.mouvement();
             if (boid.rebondir_si_hors_limite())
