@@ -82,10 +82,11 @@ std::vector<Boid> Boid::creation_boids(int num_boids, float limite_haut, float l
 void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force)
 {
     glm::vec2 centre_boids(0.0f);
-    int       count = 0;
+    int       compteur_voisin_proximité = 0;
 
     for (const auto& boid : boids)
     {
+        // On ignore le boid courant
         if (&boid == this)
         {
             continue;
@@ -94,16 +95,21 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, co
         float distance = glm::distance(m_position, boid.m_position);
         if (distance < cohesion_distance)
         {
+            // On ajoute la position du boid courant au centre de gravité des boids voisins
             centre_boids += boid.m_position;
-            count++;
+            compteur_voisin_proximité++;
         }
     }
 
-    if (count > 0)
+    // Si au moins un voisin à proximité a été trouvé
+    if (compteur_voisin_proximité > 0)
     {
-        centre_boids /= static_cast<float>(count);
+        // On calcule la position moyenne du centre de gravité des boids voisins
+        centre_boids /= static_cast<float>(compteur_voisin_proximité);
         glm::vec2 cohesion_vector = centre_boids - m_position;
         cohesion_vector           = glm::normalize(cohesion_vector) * cohesion_force;
+
+        // On ajoute le vecteur de cohésion à la direction actuelle du boid
         m_direction += cohesion_vector;
         m_direction = glm::normalize(m_direction);
     }
@@ -112,27 +118,35 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, co
 void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force)
 {
     glm::vec2 average_direction(0.0f);
-    int       count = 0;
+    int       compteur_voisin_proximité = 0;
 
     for (const auto& boid : boids)
     {
+        // On ignore le boid courant
         if (&boid == this)
         {
             continue;
         }
 
         float distance = glm::distance(m_position, boid.m_position);
+
+        // Si le boid est dans la distance d'alignement
         if (distance < alignement_distance)
         {
+            // On ajoute la direction du voisin au total
             average_direction += boid.m_direction;
-            count++;
+            compteur_voisin_proximité++;
         }
     }
 
-    if (count > 0)
+    // Si au moins un voisin est aligné
+    if (compteur_voisin_proximité > 0)
     {
-        average_direction /= static_cast<float>(count);
+        // On calcule la direction moyenne et on normalise
+        average_direction /= static_cast<float>(compteur_voisin_proximité);
         average_direction = glm::normalize(average_direction) * alignement_force;
+
+        // On ajoute la direction moyenne à la direction du boid courant et on normalise
         m_direction += average_direction;
         m_direction = glm::normalize(m_direction);
     }
@@ -140,11 +154,12 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance
 
 void Boid::separation(const std::vector<Boid>& boids, float separation_distance, float separation_strength)
 {
-    glm::vec2 separation_force(0.0f, 0.0f);
-    int       neighbor_count = 0;
+    glm::vec2 separation_force(0.0f);
+    int       compteur_voisin_proximité = 0;
 
     for (const auto& other_boid : boids)
     {
+        // On ignore le boid courant
         if (&other_boid == this)
         {
             continue;
@@ -154,18 +169,24 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_distance,
 
         if (distance < separation_distance)
         {
+            // On calcule le facteur de séparation en fonction de la distance
             float separation_factor = (separation_distance - distance) / separation_distance;
+
+            // On ajoute la force de séparation à la force totale, en tenant compte du facteur de séparation et de la distance
             separation_force += (m_position - other_boid.m_position) * separation_factor / (distance * distance);
-            neighbor_count++;
+
+            compteur_voisin_proximité++;
         }
     }
 
-    if (neighbor_count > 0)
+    if (compteur_voisin_proximité > 0)
     {
-        separation_force /= static_cast<float>(neighbor_count);
+        // On calcule la moyenne de la force de séparation et on normalise
+        separation_force /= static_cast<float>(compteur_voisin_proximité);
         separation_force = glm::normalize(separation_force) * separation_strength;
-    }
 
-    m_direction += separation_force;
-    m_direction = glm::normalize(m_direction);
+        // On ajoute la force de séparation à la direction actuelle du boid et on normalise
+        m_direction += separation_force;
+        m_direction = glm::normalize(m_direction);
+    }
 }
