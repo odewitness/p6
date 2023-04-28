@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <vector>
 #include "Boid.hpp"
+#include "Proie.hpp"
 #include "glm/fwd.hpp"
 #include "p6/p6.h"
 
@@ -27,7 +28,7 @@ int main(int argc, char* argv[])
     float limite_droite = ctx.aspect_ratio();
     float limite_haut   = 1;
     float limite_bas    = -1;
-    int   nombre_boids  = 50;
+    int   nombre_boids  = 2;
     float taille_boid   = 0.05f;
 
     float cohesion_force      = 0.f;
@@ -80,6 +81,7 @@ int main(int argc, char* argv[])
         {
             boid.set_taille(taille_boid);
             boid.dessin(ctx);
+            // boid.update(boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
             boid.mouvement();
             if (boid.rebondir_si_hors_limite())
             {
