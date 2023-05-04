@@ -3,6 +3,7 @@
 #include "Boid.hpp"
 #include "Proie.hpp"
 #include "glm/fwd.hpp"
+#include "imgui.h"
 #include "p6/p6.h"
 
 #define DOCTEST_CONFIG_IMPLEMENT
@@ -28,15 +29,15 @@ int main(int argc, char* argv[])
     float limite_droite = ctx.aspect_ratio();
     float limite_haut   = 1;
     float limite_bas    = -1;
-    int   nombre_boids  = 2;
-    float taille_boid   = 0.05f;
+    int   nombre_boids  = 20;
+    float taille_boid   = 0.01f;
 
-    float cohesion_force      = 0.f;
-    float cohesion_distance   = 0.5f;
-    float alignement_force    = 0.f;
-    float alignement_distance = 0.5f;
-    float separation_force    = 0.f;
-    float separation_distance = 0.5f;
+    float cohesion_force   = 0.f;
+    float cohesion_rayon   = 0.5f;
+    float alignement_force = 0.f;
+    float alignement_rayon = 0.5f;
+    float separation_force = 0.f;
+    float separation_rayon = 0.5f;
 
     std::vector<Boid>
         boids = creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
@@ -45,15 +46,32 @@ int main(int argc, char* argv[])
     // Paramètres IMGUI
     ctx.imgui = [&]() {
         ImGui::Begin("Paramètres");
+
+        ImGui::Text("Configuration de l'affichage :");
         ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
-        ImGui::Checkbox("Limiter le nombre de boids en fonction de la taille", &etat_checkbox);
         ImGui::SliderFloat("Taille Boid", &taille_boid, 0.01f, 0.3f);
-        ImGui::SliderFloat("Cohesion", &cohesion_force, 0.f, 0.1f);
-        ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.f, 2.0f);
-        ImGui::SliderFloat("Alignement", &alignement_force, 0.0f, 0.1f);
-        ImGui::SliderFloat("Alignement Distance", &alignement_distance, 0.0f, 2.0f);
-        ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
-        ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
+        ImGui::Checkbox("Limiter le nombre de boids en fonction de la taille", &etat_checkbox);
+
+        ImGui::Separator();
+        ImGui::Text("Configuration du comportement des Boids :");
+        ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::CollapsingHeader("Cohésion"))
+        {
+            ImGui::SliderFloat("Force de cohésion", &cohesion_force, 0.f, 0.1f);
+            ImGui::SliderFloat("Rayon de cohésion", &cohesion_rayon, 0.f, 2.0f);
+        }
+        ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::CollapsingHeader("Alignement"))
+        {
+            ImGui::SliderFloat("Force d'alignement", &alignement_force, 0.0f, 0.1f);
+            ImGui::SliderFloat("Rayon d'alignement", &alignement_rayon, 0.0f, 2.0f);
+        }
+        ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::CollapsingHeader("Séparation"))
+        {
+            ImGui::SliderFloat("Force de séparation", &separation_force, 0.0f, 0.1f);
+            ImGui::SliderFloat("Rayon de séparation", &separation_rayon, 0.0f, 2.0f);
+        }
         ImGui::End();
 
         // Ajout et suppression des boids
@@ -87,7 +105,7 @@ int main(int argc, char* argv[])
                     }
                 }
             }
-            boid.update(taille_boid, ctx, boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
+            boid.update(taille_boid, ctx, boids, cohesion_rayon, cohesion_force, alignement_rayon, alignement_force, separation_rayon, separation_force);
         }
     };
 

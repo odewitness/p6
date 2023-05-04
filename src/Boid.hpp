@@ -32,7 +32,7 @@ public:
     Boid();
     explicit Boid(const BoidProperties& properties);
 
-    void update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force, const float& alignement_distance, const float& alignement_force, const float& separation_distance, const float& separation_force);
+    void update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force, const float& alignement_rayon, const float& alignement_force, const float& separation_rayon, const float& separation_force);
 
 private:
     void set_taille(float taille);
@@ -41,9 +41,9 @@ private:
     void dessin(p6::Context& ctx) const;
     void afficher_statistiques() const;
 
-    void separation(const std::vector<Boid>& boids, float separation_distance, float separation_force);
-    void cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force);
-    void alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force);
+    void separation(const std::vector<Boid>& boids, float separation_rayon, float separation_force);
+    void cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force);
+    void alignement(std::vector<Boid>& boids, const float& alignement_rayon, const float& alignement_force);
 
     bool rebondir_si_hors_limite();
     void mouvement();

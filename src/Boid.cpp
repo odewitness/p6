@@ -82,7 +82,7 @@ std::vector<Boid> creation_boids(int num_boids, float limite_haut, float limite_
     return boids;
 }
 
-void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force)
+void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force)
 {
     glm::vec2 centre_boids(0.0f);
     int       compteur_voisin_proximité = 0;
@@ -96,7 +96,7 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, co
         }
 
         float distance = glm::distance(m_properties.position, boid.m_properties.position);
-        if (distance < cohesion_distance)
+        if (distance < cohesion_rayon)
         {
             // On ajoute la position du boid courant au centre de gravité des boids voisins
             centre_boids += boid.m_properties.position;
@@ -118,7 +118,7 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_distance, co
     }
 }
 
-void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force)
+void Boid::alignement(std::vector<Boid>& boids, const float& alignement_rayon, const float& alignement_force)
 {
     glm::vec2 direction_moyenne(0.0f);
     int       compteur_voisin_proximité = 0;
@@ -134,7 +134,7 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance
         float distance = glm::distance(m_properties.position, boid.m_properties.position);
 
         // Si le boid est dans la distance d'alignement
-        if (distance < alignement_distance)
+        if (distance < alignement_rayon)
         {
             // On ajoute la direction du voisin au total
             direction_moyenne += boid.m_properties.direction;
@@ -155,7 +155,7 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_distance
     }
 }
 
-void Boid::separation(const std::vector<Boid>& boids, float separation_distance, float separation_force)
+void Boid::separation(const std::vector<Boid>& boids, float separation_rayon, float separation_force)
 {
     glm::vec2 separation_moyenne(0.0f);
     int       compteur_voisin_proximité = 0;
@@ -170,10 +170,10 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_distance,
 
         float distance = glm::distance(m_properties.position, other_boid.m_properties.position);
 
-        if (distance < separation_distance)
+        if (distance < separation_rayon)
         {
             // On calcule le facteur de séparation en fonction de la distance
-            float facteur_separation = (separation_distance - distance) / separation_distance;
+            float facteur_separation = (separation_rayon - distance) / separation_rayon;
 
             // On ajoute la force de séparation à la force totale, en tenant compte du facteur de séparation et de la distance
             separation_moyenne += (m_properties.position - other_boid.m_properties.position) * facteur_separation / (distance * distance);
@@ -194,16 +194,16 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_distance,
     }
 }
 
-void Boid::update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force, const float& alignement_distance, const float& alignement_force, const float& separation_distance, const float& separation_force)
+void Boid::update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force, const float& alignement_rayon, const float& alignement_force, const float& separation_rayon, const float& separation_force)
 {
     set_taille(taille_boid);
     dessin(ctx);
     mouvement();
     if (rebondir_si_hors_limite())
     {
-        cohesion(boids, cohesion_distance, cohesion_force);
-        alignement(boids, alignement_distance, alignement_force);
-        separation(boids, separation_distance, separation_force);
+        cohesion(boids, cohesion_rayon, cohesion_force);
+        alignement(boids, alignement_rayon, alignement_force);
+        separation(boids, separation_rayon, separation_force);
         mouvement();
     }
 }
