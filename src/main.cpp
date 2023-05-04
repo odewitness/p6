@@ -41,10 +41,12 @@ int main(int argc, char* argv[])
     std::vector<Boid>
         boids = creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
 
+    bool etat_checkbox = false; // Variable pour stocker l'état de la checkbox
     // Paramètres IMGUI
     ctx.imgui = [&]() {
         ImGui::Begin("Paramètres");
         ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
+        ImGui::Checkbox("Limiter le nombre de boids en fonction de la taille", &etat_checkbox);
         ImGui::SliderFloat("Taille Boid", &taille_boid, 0.01f, 0.3f);
         ImGui::SliderFloat("Cohesion", &cohesion_force, 0.f, 0.1f);
         ImGui::SliderFloat("Cohesion Distance", &cohesion_distance, 0.f, 2.0f);
@@ -53,10 +55,6 @@ int main(int argc, char* argv[])
         ImGui::SliderFloat("Séparation", &separation_force, 0.0f, 0.1f);
         ImGui::SliderFloat("Séparation Distance", &separation_distance, 0.0f, 2.0f);
         ImGui::End();
-
-        // Gestion de la taille maximale des boids
-        if (taille_boid > 0.2)
-            nombre_boids %= 20;
 
         // Ajout et suppression des boids
         int taille_boids_vecteur = boids.size(); // OK car taille max = 100 < taille max int
@@ -79,6 +77,16 @@ int main(int argc, char* argv[])
 
         for (auto& boid : boids)
         {
+            if (etat_checkbox)
+            {
+                if (taille_boid > 0.2)
+                {
+                    if (nombre_boids > 20)
+                    {
+                        nombre_boids = 20;
+                    }
+                }
+            }
             boid.update(taille_boid, ctx, boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
         }
     };

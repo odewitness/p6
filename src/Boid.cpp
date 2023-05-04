@@ -1,5 +1,4 @@
 #include "Boid.hpp"
-#include "glm/fwd.hpp"
 
 // faire + de strong type
 
