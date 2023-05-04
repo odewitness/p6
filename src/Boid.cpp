@@ -1,6 +1,7 @@
 #include "Boid.hpp"
-#include <unordered_set>
 #include "glm/fwd.hpp"
+
+// faire + de strong type
 
 Boid::Boid(const BoidProperties& properties)
     : m_properties(properties) {}
@@ -65,7 +66,7 @@ bool Boid::rebondir_si_hors_limite()
     return hors_limite;
 }
 
-std::vector<Boid> Boid::creation_boids(int num_boids, float limite_haut, float limite_bas, float limite_gauche, float limite_droite, float taille_boid)
+std::vector<Boid> creation_boids(int num_boids, float limite_haut, float limite_bas, float limite_gauche, float limite_droite, float taille_boid)
 {
     std::vector<Boid> boids;
     for (int i = 0; i < num_boids; i++)
@@ -212,18 +213,20 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_distance,
 //     m_properties.taille = taille;
 // }
 
-// void Boid::update(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force, const float& alignement_distance, const float& alignement_force, const float& separation_distance, const float& separation_force)
-// {
-//     mouvement();
-//     bool is_out_of_bounds = rebondir_si_hors_limite();
-
-//     if (!is_out_of_bounds)
-//     {
-//         cohesion(boids, cohesion_distance, cohesion_force);
-//         alignement(boids, alignement_distance, alignement_force);
-//         separation(boids, separation_distance, separation_force);
-//     }
-// }
+void Boid::update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force, const float& alignement_distance, const float& alignement_force, const float& separation_distance, const float& separation_force)
+{
+    set_taille(taille_boid);
+    dessin(ctx);
+    // boid.update(boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
+    mouvement();
+    if (rebondir_si_hors_limite())
+    {
+        cohesion(boids, cohesion_distance, cohesion_force);
+        alignement(boids, alignement_distance, alignement_force);
+        separation(boids, separation_distance, separation_force);
+        mouvement();
+    }
+}
 
 // void Boid::dessin(p6::Context& ctx)
 // {

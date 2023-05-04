@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     float separation_distance = 0.5f;
 
     std::vector<Boid>
-        boids = Boid::creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
+        boids = creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
 
     // Paramètres IMGUI
     ctx.imgui = [&]() {
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
         if (taille_boids_vecteur < nombre_boids)
         {
             int  nombre_de_boids_a_ajouter = nombre_boids - taille_boids_vecteur;
-            auto nouveaux_boids            = Boid::creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
+            auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid);
             boids.insert(boids.end(), nouveaux_boids.begin(), nouveaux_boids.end());
         }
         else if (taille_boids_vecteur > nombre_boids)
@@ -79,17 +79,7 @@ int main(int argc, char* argv[])
 
         for (auto& boid : boids)
         {
-            boid.set_taille(taille_boid);
-            boid.dessin(ctx);
-            // boid.update(boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
-            boid.mouvement();
-            if (boid.rebondir_si_hors_limite())
-            {
-                boid.cohesion(boids, cohesion_distance, cohesion_force);
-                boid.alignement(boids, alignement_distance, alignement_force);
-                boid.separation(boids, separation_distance, separation_force);
-                boid.mouvement();
-            }
+            boid.update(taille_boid, ctx, boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
         }
     };
 
