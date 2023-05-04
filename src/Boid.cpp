@@ -12,9 +12,9 @@ void Boid::set_taille(float taille)
 
 void Boid::dessin(p6::Context& ctx) const
 {
-    ctx.fill = {0.6627451, 0.59215686, 0.8745098};
+    ctx.fill = {0.6627451f, 0.59215686f, 0.8745098f};
 
-    ctx.stroke = {0.21960784, 0.22352941, 0.34509804};
+    ctx.stroke = {0.21960784f, 0.22352941f, 0.34509804f};
     ctx.equilateral_triangle(
         p6::Center{m_properties.position},
         p6::Radius{m_properties.taille},
@@ -85,7 +85,7 @@ std::vector<Boid> creation_boids(int num_boids, float limite_haut, float limite_
 void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force)
 {
     glm::vec2 centre_boids(0.0f);
-    int       compteur_voisin_proximité = 0;
+    int       compteur_voisin_proximite = 0;
 
     for (const auto& boid : boids)
     {
@@ -100,15 +100,15 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const
         {
             // On ajoute la position du boid courant au centre de gravité des boids voisins
             centre_boids += boid.m_properties.position;
-            compteur_voisin_proximité++;
+            compteur_voisin_proximite++;
         }
     }
 
     // Si au moins un voisin à proximité a été trouvé
-    if (compteur_voisin_proximité > 0)
+    if (compteur_voisin_proximite > 0)
     {
         // On calcule la position moyenne du centre de gravité des boids voisins
-        centre_boids /= static_cast<float>(compteur_voisin_proximité);
+        centre_boids /= static_cast<float>(compteur_voisin_proximite);
         glm::vec2 vecteur_cohesion = centre_boids - m_properties.position;
         vecteur_cohesion           = glm::normalize(vecteur_cohesion) * cohesion_force;
 
@@ -121,7 +121,7 @@ void Boid::cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const
 void Boid::alignement(std::vector<Boid>& boids, const float& alignement_rayon, const float& alignement_force)
 {
     glm::vec2 direction_moyenne(0.0f);
-    int       compteur_voisin_proximité = 0;
+    int       compteur_voisin_proximite = 0;
 
     for (const auto& boid : boids)
     {
@@ -138,15 +138,15 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_rayon, c
         {
             // On ajoute la direction du voisin au total
             direction_moyenne += boid.m_properties.direction;
-            compteur_voisin_proximité++;
+            compteur_voisin_proximite++;
         }
     }
 
     // Si au moins un voisin est aligné
-    if (compteur_voisin_proximité > 0)
+    if (compteur_voisin_proximite > 0)
     {
         // On calcule la direction moyenne et on normalise
-        direction_moyenne /= static_cast<float>(compteur_voisin_proximité);
+        direction_moyenne /= static_cast<float>(compteur_voisin_proximite);
         direction_moyenne = glm::normalize(direction_moyenne) * alignement_force;
 
         // On ajoute la direction moyenne à la direction du boid courant et on normalise
@@ -158,7 +158,7 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_rayon, c
 void Boid::separation(const std::vector<Boid>& boids, float separation_rayon, float separation_force)
 {
     glm::vec2 separation_moyenne(0.0f);
-    int       compteur_voisin_proximité = 0;
+    int       compteur_voisin_proximite = 0;
 
     for (const auto& other_boid : boids)
     {
@@ -178,14 +178,14 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_rayon, fl
             // On ajoute la force de séparation à la force totale, en tenant compte du facteur de séparation et de la distance
             separation_moyenne += (m_properties.position - other_boid.m_properties.position) * facteur_separation / (distance * distance);
 
-            compteur_voisin_proximité++;
+            compteur_voisin_proximite++;
         }
     }
 
-    if (compteur_voisin_proximité > 0)
+    if (compteur_voisin_proximite > 0)
     {
         // On calcule la moyenne de la force de séparation et on normalise
-        separation_moyenne /= static_cast<float>(compteur_voisin_proximité);
+        separation_moyenne /= static_cast<float>(compteur_voisin_proximite);
         separation_moyenne = glm::normalize(separation_moyenne) * separation_force;
 
         // On ajoute la force de séparation à la direction actuelle du boid et on normalise
