@@ -14,6 +14,7 @@ struct BoidProperties {
     float     limite_droite;
     glm::vec3 color;
 };
+
 class Boid {
 private:
     glm::vec2      m_position;
@@ -40,10 +41,10 @@ private:
     void dessin(p6::Context& ctx);
     void afficher_statistiques() const;
 
-    // private:
     void separation(const std::vector<Boid>& boids, float separation_distance, float separation_force);
     void cohesion(std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force);
     void alignement(std::vector<Boid>& boids, const float& alignement_distance, const float& alignement_force);
+
     bool rebondir_si_hors_limite();
     void mouvement();
 };

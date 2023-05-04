@@ -72,7 +72,7 @@ std::vector<Boid> creation_boids(int num_boids, float limite_haut, float limite_
     for (int i = 0; i < num_boids; i++)
     {
         glm::vec2 position  = glm::vec2(p6::random::number(limite_gauche, limite_droite), p6::random::number(limite_bas, limite_haut));
-        float     vitesse   = p6::random::number(0.001f, 0.005f);
+        Vitesse   vitesse   = p6::random::number(0.001f, 0.005f);
         glm::vec2 direction = glm::vec2(p6::random::number(0.5f, 1.00f), p6::random::number(0.01f, 1.0f));
         glm::vec3 color     = glm::vec3(p6::random::number(0.0f, 1.0f), p6::random::number(0.0f, 1.0f), p6::random::number(0.0f, 1.0f));
 
@@ -195,6 +195,20 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_distance,
     }
 }
 
+void Boid::update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force, const float& alignement_distance, const float& alignement_force, const float& separation_distance, const float& separation_force)
+{
+    set_taille(taille_boid);
+    dessin(ctx);
+    mouvement();
+    if (rebondir_si_hors_limite())
+    {
+        cohesion(boids, cohesion_distance, cohesion_force);
+        alignement(boids, alignement_distance, alignement_force);
+        separation(boids, separation_distance, separation_force);
+        mouvement();
+    }
+}
+
 // -------------------------------------------------------------------------
 
 // Boid::Boid(glm::vec2 position, glm::vec2 direction, float vitesse, float taille, float limite_haut, float limite_bas, float limite_gauche, float limite_droite)
@@ -212,21 +226,6 @@ void Boid::separation(const std::vector<Boid>& boids, float separation_distance,
 // {
 //     m_properties.taille = taille;
 // }
-
-void Boid::update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_distance, const float& cohesion_force, const float& alignement_distance, const float& alignement_force, const float& separation_distance, const float& separation_force)
-{
-    set_taille(taille_boid);
-    dessin(ctx);
-    // boid.update(boids, cohesion_distance, cohesion_force, alignement_distance, alignement_force, separation_distance, separation_force);
-    mouvement();
-    if (rebondir_si_hors_limite())
-    {
-        cohesion(boids, cohesion_distance, cohesion_force);
-        alignement(boids, alignement_distance, alignement_force);
-        separation(boids, separation_distance, separation_force);
-        mouvement();
-    }
-}
 
 // void Boid::dessin(p6::Context& ctx)
 // {
