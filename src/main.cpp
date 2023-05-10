@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <vector>
 #include "Boid.hpp"
-#include "Proie.hpp"
 #include "glm/fwd.hpp"
 #include "imgui.h"
 #include "p6/p6.h"

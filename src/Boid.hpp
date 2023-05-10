@@ -36,12 +36,10 @@ public:
 
 private:
     void set_taille(float taille);
-    void set_color(glm::vec3 color);
 
     void dessin(p6::Context& ctx) const;
-    void afficher_statistiques() const;
 
-    void separation(const std::vector<Boid>& boids, float separation_rayon, float separation_force);
+    void separation(std::vector<Boid>& boids, const float& separation_rayon, const float& separation_force);
     void cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force);
     void alignement(std::vector<Boid>& boids, const float& alignement_rayon, const float& alignement_force);
 

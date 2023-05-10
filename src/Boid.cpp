@@ -1,7 +1,5 @@
 #include "Boid.hpp"
 
-// faire + de strong type
-
 Boid::Boid(const BoidProperties& properties)
     : m_properties(properties) {}
 
@@ -155,7 +153,7 @@ void Boid::alignement(std::vector<Boid>& boids, const float& alignement_rayon, c
     }
 }
 
-void Boid::separation(const std::vector<Boid>& boids, float separation_rayon, float separation_force)
+void Boid::separation(std::vector<Boid>& boids, const float& separation_rayon, const float& separation_force)
 {
     glm::vec2 separation_moyenne(0.0f);
     int       compteur_voisin_proximite = 0;
