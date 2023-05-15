@@ -31,75 +31,6 @@ int main(int argc, char* argv[])
     auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
     ctx.maximize_window();
 
-    // Paramètres
-    float limite_droite   = 1;
-    float limite_gauche   = -1;
-    float limite_haut     = 1;
-    float limite_bas      = -1;
-    float limite_devant   = 1;
-    float limite_derriere = -1;
-    int   nombre_boids    = 20;
-    float taille_boid     = 0.01f;
-
-    float cohesion_force   = 0.f;
-    float cohesion_rayon   = 0.5f;
-    float alignement_force = 0.f;
-    float alignement_rayon = 0.5f;
-    float separation_force = 0.f;
-    float separation_rayon = 0.5f;
-
-    std::vector<Boid>
-        boids = creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid, limite_devant, limite_derriere);
-
-    bool etat_checkbox = false;
-    // Paramètres IMGUI
-    ctx.imgui = [&]() {
-        ImGui::Begin("Paramètres");
-
-        ImGui::Text("Configuration de l'affichage :");
-        ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
-        ImGui::SliderFloat("Taille Boid", &taille_boid, 0.01f, 0.3f);
-        ImGui::Checkbox("Limiter le nombre de boids en fonction de la taille", &etat_checkbox);
-
-        ImGui::Separator();
-        ImGui::Text("Configuration du comportement des Boids :");
-        ImGui::SetNextTreeNodeOpen(true);
-        if (ImGui::CollapsingHeader("Cohésion"))
-        {
-            ImGui::SliderFloat("Force de cohésion", &cohesion_force, 0.f, 0.1f);
-            ImGui::SliderFloat("Rayon de cohésion", &cohesion_rayon, 0.f, 2.0f);
-        }
-        ImGui::SetNextTreeNodeOpen(true);
-        if (ImGui::CollapsingHeader("Alignement"))
-        {
-            ImGui::SliderFloat("Force d'alignement", &alignement_force, 0.0f, 0.1f);
-            ImGui::SliderFloat("Rayon d'alignement", &alignement_rayon, 0.0f, 2.0f);
-        }
-        ImGui::SetNextTreeNodeOpen(true);
-        if (ImGui::CollapsingHeader("Séparation"))
-        {
-            ImGui::SliderFloat("Force de séparation", &separation_force, 0.0f, 0.1f);
-            ImGui::SliderFloat("Rayon de séparation", &separation_rayon, 0.0f, 2.0f);
-        }
-        ImGui::End();
-
-        // Ajout et suppression des boids
-        int taille_boids_vecteur = boids.size(); // OK car taille max = 100 < taille max int
-        if (taille_boids_vecteur < nombre_boids)
-        {
-            int  nombre_de_boids_a_ajouter = nombre_boids - taille_boids_vecteur;
-            auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid, limite_devant, limite_derriere);
-            boids.insert(boids.end(), nouveaux_boids.begin(), nouveaux_boids.end());
-        }
-        else if (taille_boids_vecteur > nombre_boids)
-        {
-            int nombre_de_boids_a_enlever = taille_boids_vecteur - nombre_boids;
-            boids.erase(boids.end() - nombre_de_boids_a_enlever, boids.end());
-        }
-    };
-
-    // ----------------------------------------------------------------------------
-
     GLuint vbo, vao;
 
     // ------------------ VBO ----------------------
@@ -110,7 +41,7 @@ int main(int argc, char* argv[])
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     // Remplissage
-    float                                  radius           = 1.f;
+    float                                  radius           = 0.1f;
     size_t                                 segmentLatitude  = 32;
     size_t                                 segmentLongitude = 16;
     const std::vector<glimac::ShapeVertex> vertices         = glimac::sphere_vertices(radius, segmentLatitude, segmentLongitude);
@@ -159,18 +90,77 @@ int main(int argc, char* argv[])
     GLuint uMVMatrix     = glGetUniformLocation(shader.id(), "uMVMatrix");
     GLuint uNormalMatrix = glGetUniformLocation(shader.id(), "uNormalMatrix");
     glEnable(GL_DEPTH_TEST);
-    // ------------------------------------------------------------------------------------
-
-    // std::vector<glm::vec3> rotationAxes;
-
-    // // Générer les 32 axes de rotation aléatoires
-    // for (int i = 0; i < 32; i++)
-    // {
-    //     glm::vec3 axis = glm::normalize(glm::sphericalRand(1.0f));
-    //     rotationAxes.push_back(axis);
-    // }
-
+    // ------------------------------------------------------------------------------------s
     // ---------------------------------------------------------------
+
+    // Paramètres
+    float limite_droite   = 5;
+    float limite_gauche   = -5;
+    float limite_haut     = 5;
+    float limite_bas      = -5;
+    float limite_devant   = 5;
+    float limite_derriere = -5;
+    int   nombre_boids    = 20;
+    // float taille_boid     = 0.01f;
+
+    float cohesion_force   = 0.f;
+    float cohesion_rayon   = 1.f;
+    float alignement_force = 0.f;
+    float alignement_rayon = 1.f;
+    float separation_force = 0.f;
+    float separation_rayon = 1.f;
+
+    std::vector<Boid>
+        boids = creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, radius, limite_devant, limite_derriere);
+
+    bool etat_checkbox = false;
+    // Paramètres IMGUI
+    ctx.imgui = [&]() {
+        ImGui::Begin("Paramètres");
+
+        ImGui::Text("Configuration de l'affichage :");
+        ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
+        ImGui::SliderFloat("Taille Boid", &radius, 0.01f, 0.3f);
+        ImGui::Checkbox("Limiter le nombre de boids en fonction de la taille", &etat_checkbox);
+
+        ImGui::Separator();
+        ImGui::Text("Configuration du comportement des Boids :");
+        ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::CollapsingHeader("Cohésion"))
+        {
+            ImGui::SliderFloat("Force de cohésion", &cohesion_force, 0.f, 0.1f);
+            ImGui::SliderFloat("Rayon de cohésion", &cohesion_rayon, 0.f, 0.1f);
+        }
+        ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::CollapsingHeader("Alignement"))
+        {
+            ImGui::SliderFloat("Force d'alignement", &alignement_force, 0.0f, 0.1f);
+            ImGui::SliderFloat("Rayon d'alignement", &alignement_rayon, 0.0f, 2.0f);
+        }
+        ImGui::SetNextTreeNodeOpen(true);
+        if (ImGui::CollapsingHeader("Séparation"))
+        {
+            ImGui::SliderFloat("Force de séparation", &separation_force, 0.0f, 0.1f);
+            ImGui::SliderFloat("Rayon de séparation", &separation_rayon, 0.0f, 2.0f);
+        }
+        ImGui::End();
+
+        // Ajout et suppression des boids
+        int taille_boids_vecteur = boids.size(); // OK car taille max = 100 < taille max int
+        if (taille_boids_vecteur < nombre_boids)
+        {
+            int  nombre_de_boids_a_ajouter = nombre_boids - taille_boids_vecteur;
+            auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite, radius, limite_devant, limite_derriere);
+            boids.insert(boids.end(), nouveaux_boids.begin(), nouveaux_boids.end());
+        }
+        else if (taille_boids_vecteur > nombre_boids)
+        {
+            int nombre_de_boids_a_enlever = taille_boids_vecteur - nombre_boids;
+            boids.erase(boids.end() - nombre_de_boids_a_enlever, boids.end());
+        }
+    };
+
+    // ----------------------------------------------------------------------------
 
     // Declare your infinite update loop.
     ctx.update = [&]() {
@@ -197,11 +187,8 @@ int main(int argc, char* argv[])
             glm::vec3 translationVector(0.0f, 0.0f, -5.0f);
             MVMatrix = glm::translate(glm::mat4(1.0f), translationVector);
 
-            // MVMatrix = glm::translate(glm::mat4{1.f}, {0.f, 0.f, -5.f}); // Translation
-            // MVMatrix = glm::translate(MVMatrix, {-2.f, 0.f, 0.f});           // Translation * Rotation * Translation
-            MVMatrix = glm::scale(MVMatrix, glm::vec3{0.2f});               // Translation * Rotation * Translation * Scale
+            MVMatrix = glm::scale(MVMatrix, glm::vec3{radius});
             MVMatrix = glm::translate(MVMatrix, boid.get_position() * 2.f); // Translation * Rotation * Translation
-            // std::cout << glm::to_string(boid.get_position()) << std::endl;
 
             // Envoi des matrices au GPU
             glUniformMatrix4fv(uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
@@ -210,7 +197,7 @@ int main(int argc, char* argv[])
 
             glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-            boid.update(taille_boid, ctx, boids, cohesion_rayon, cohesion_force, alignement_rayon, alignement_force, separation_rayon, separation_force);
+            boid.update(radius, ctx, boids, cohesion_rayon, cohesion_force, alignement_rayon, alignement_force, separation_rayon, separation_force);
         }
 
         // Débind du VAO

@@ -39,43 +39,48 @@ bool Boid::rebondir_si_hors_limite()
     {
         m_properties.position.y  = m_properties.limite_haut - m_properties.taille;
         m_properties.direction.y = -m_properties.direction.y * rebond;
-        // m_properties.direction.x += rebond * (1 - std::abs(m_properties.direction.y));
-        // m_properties.direction.z += rebond * (1 - std::abs(m_properties.direction.y));
+        m_properties.direction.x += rebond * (1 - std::abs(m_properties.direction.y));
+        m_properties.direction.z += rebond * (1 - std::abs(m_properties.direction.y));
         hors_limite = false;
     }
     else if (m_properties.position.y < m_properties.limite_bas + m_properties.taille)
     {
         m_properties.position.y  = m_properties.limite_bas + m_properties.taille;
         m_properties.direction.y = -m_properties.direction.y * rebond;
-        // m_properties.direction.x -= rebond * (1 - std::abs(m_properties.direction.y));
+        m_properties.direction.x -= rebond * (1 - std::abs(m_properties.direction.y));
+        m_properties.direction.z -= rebond * (1 - std::abs(m_properties.direction.y));
         hors_limite = false;
     }
     if (m_properties.position.x > m_properties.limite_droite - m_properties.taille)
     {
         m_properties.position.x  = m_properties.limite_droite - m_properties.taille;
         m_properties.direction.x = -m_properties.direction.x * rebond;
-        // m_properties.direction.y += rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.y += rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.z += rebond * (1 - std::abs(m_properties.direction.x));
         hors_limite = false;
     }
     else if (m_properties.position.x < m_properties.limite_gauche + m_properties.taille)
     {
         m_properties.position.x  = m_properties.limite_gauche + m_properties.taille;
         m_properties.direction.x = -m_properties.direction.x * rebond;
-        // m_properties.direction.y -= rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.y -= rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.z -= rebond * (1 - std::abs(m_properties.direction.x));
         hors_limite = false;
     }
     if (m_properties.position.z > m_properties.limite_devant - m_properties.taille)
     {
         m_properties.position.z  = m_properties.limite_devant - m_properties.taille;
         m_properties.direction.z = -m_properties.direction.z * rebond;
-        // m_properties.direction.y += rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.y += rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.x += rebond * (1 - std::abs(m_properties.direction.x));
         hors_limite = false;
     }
     else if (m_properties.position.z < m_properties.limite_gauche + m_properties.taille)
     {
         m_properties.position.z  = m_properties.limite_gauche + m_properties.taille;
         m_properties.direction.z = -m_properties.direction.z * rebond;
-        // m_properties.direction.y -= rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.y -= rebond * (1 - std::abs(m_properties.direction.x));
+        m_properties.direction.x -= rebond * (1 - std::abs(m_properties.direction.x));
         hors_limite = false;
     }
 
