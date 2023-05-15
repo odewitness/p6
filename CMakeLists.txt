@@ -51,3 +51,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
 # ---Add p6 library---
 # add_subdirectory(lib/p6)
 # target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
+
+
+    # ---Copy the assets and the shaders to the output folder (where the executable is created)---
+    Cool__target_copy_folder(${PROJECT_NAME} assets)
