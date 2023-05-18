@@ -32,6 +32,7 @@ private:
     float          m_limite_droite;
     float          m_limite_devant;
     float          m_limite_derriere;
+    float          m_radius;
     glm::vec3      m_color;
     BoidProperties m_properties;
 
@@ -42,6 +43,8 @@ public:
     void update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force, const float& alignement_rayon, const float& alignement_force, const float& separation_rayon, const float& separation_force);
 
     glm::vec3 get_position();
+    // float     getRadius();
+    // void      setRadius(float radius);
 
 private:
     void set_taille(float taille);

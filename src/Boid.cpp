@@ -13,6 +13,16 @@ glm::vec3 Boid::get_position()
     return m_properties.position;
 }
 
+// float Boid::getRadius()
+// {
+//     return m_radius;
+// }
+
+// void Boid::setRadius(float radius)
+// {
+//     m_radius = radius;
+// }
+
 void Boid::dessin(p6::Context& ctx) const
 {
     // ctx.fill = {0.6627451f, 0.59215686f, 0.8745098f};
