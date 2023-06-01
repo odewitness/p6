@@ -1,7 +1,6 @@
 #include "Scene.hpp"
 // #include <vcruntime.h>
 #include <vector>
-#include "FreeflyCamera.hpp"
 #include "GLBoid.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -9,7 +8,7 @@
 
 void Scene::Personnage::init()
 {
-    std::string inputfile = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/Robot.obj";
+    std::string inputfile = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/Fish.obj";
     std::string base_dir  = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/";
     m_meshes              = Util::load(m_vao, m_vbo, m_ibo, inputfile, base_dir);
 }

@@ -2,7 +2,6 @@
 #include <glm/gtx/string_cast.hpp>
 #include <vector>
 #include "Boid.hpp"
-#include "FreeflyCamera.hpp"
 #include "GLBoid.hpp"
 #include "Scene.hpp"
 #include "glimac/TrackballCamera.hpp"
