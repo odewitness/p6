@@ -24,7 +24,7 @@ void main()
         vec3 specularColor = uMaterialSpecular;
 
         // Calcul de l'éclairage
-        vec3 lightPosition = vec3(0.0, 0.0, 0.0);
+        vec3 lightPosition = vec3(0.0, 4.0, 4.0);
         vec3 lightDirection = normalize(lightPosition - vPosition_vs);
         float ambientStrength = 0.1;
         vec3 ambient = ambientStrength * ambientColor;
