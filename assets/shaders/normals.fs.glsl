@@ -26,7 +26,7 @@ void main()
         // Calcul de l'éclairage
         vec3 lightPosition = vec3(0.0, 4.0, 4.0);
         vec3 lightDirection = normalize(lightPosition - vPosition_vs);
-        float ambientStrength = 0.1;
+        float ambientStrength = 0.01;
         vec3 ambient = ambientStrength * ambientColor;
 
         vec3 normal = normalize(vNormal_vs);

@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     }
 
     // Actual app
-    auto ctx = p6::Context{{.title = "Simple-p6-Setup"}};
+    auto ctx = p6::Context{{.title = "Sarah-Aude"}};
     ctx.maximize_window();
 
     Scene scene;
