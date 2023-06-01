@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
     scene.initScene();
     // ------------------------------------------------------------------------------------s
     // ---------------------------------------------------------------
-    bool imguiActive = false;
 
     // Paramètres
     float limite_droite   = 5;
@@ -65,6 +64,7 @@ int main(int argc, char* argv[])
 
     scene.createGLBoids(radius, segmentLatitude, segmentLongitude, scene.m_boids);
 
+    bool imguiActive   = false;
     bool etat_checkbox = false;
     // Paramètres IMGUI
     ctx.imgui = [&]() {
@@ -209,11 +209,6 @@ int main(int argc, char* argv[])
             }
         }
     };
-
-    // ctx.mouse_dragged = [&camera](const p6::MouseDrag& button) {
-    //     camera.rotateLeft(button.delta.x * 50);
-    //     camera.rotateUp(-button.delta.y * 50);
-    // };
 
     ctx.mouse_dragged = [&camera, &imguiActive](const p6::MouseDrag& button) {
         if (!imguiActive)
