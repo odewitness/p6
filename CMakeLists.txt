@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.20)
 
 # ---Choose project name---
 project(Simple-p6-Setup)
-
+# ---Add tinyobjloader library---
+add_subdirectory(tinyobjloader)
 # ---Declare source files---
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS src/*)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
@@ -48,6 +49,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(p6)
 target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)
+
+# ---Link tinyobjloader library---
+target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader)
 # ---Add p6 library---
 # add_subdirectory(lib/p6)
 # target_link_libraries(${PROJECT_NAME} PRIVATE p6::p6)

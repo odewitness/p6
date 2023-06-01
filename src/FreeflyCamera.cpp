@@ -1,4 +1,3 @@
-
 #include "FreeflyCamera.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/fwd.hpp"
@@ -13,6 +12,11 @@ FreeflyCamera::FreeflyCamera(const FreeflyCamera& camera)
     : m_Position(camera.m_Position), m_Phi(camera.m_Phi), m_Theta(camera.m_Theta)
 {
     computeDirectionVectors();
+}
+
+glm::vec3 FreeflyCamera::getPosition()
+{
+    return m_Position;
 }
 
 void FreeflyCamera::computeDirectionVectors()
