@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
     scene.initScene();
     // ------------------------------------------------------------------------------------s
     // ---------------------------------------------------------------
+    bool imguiActive = false;
 
     // Paramètres
     float limite_droite   = 5;
@@ -69,7 +70,7 @@ int main(int argc, char* argv[])
     // Paramètres IMGUI
     ctx.imgui = [&]() {
         ImGui::Begin("Paramètres");
-
+        imguiActive = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
         ImGui::Text("Configuration de l'affichage :");
         ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
         ImGui::SliderFloat("Taille Boid", &radius, 0.01f, 0.8f);
@@ -121,7 +122,6 @@ int main(int argc, char* argv[])
     bool D = false;
     // Declare your infinite update loop.
     ctx.update = [&]() {
-        // Camera& camera = trackCamera;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (Z)
         {
@@ -163,8 +163,12 @@ int main(int argc, char* argv[])
         {
             boid.boid.update(radius, ctx, scene.m_boids, cohesion_rayon, cohesion_force, alignement_rayon, alignement_force, separation_rayon, separation_force);
         }
+    };
 
-        ctx.key_pressed = [&Z, &Q, &S, &D](const p6::Key& key) {
+    ctx.key_pressed = [&Z, &Q, &S, &D, &imguiActive](const p6::Key& key) {
+        if (!imguiActive)
+        {
+            // ... votre code actuel de manipulation des touches
             if (key.physical == GLFW_KEY_W)
             {
                 Z = true;
@@ -181,9 +185,13 @@ int main(int argc, char* argv[])
             {
                 D = true;
             }
-        };
+        }
+    };
 
-        ctx.key_released = [&Z, &Q, &S, &D](const p6::Key& key) {
+    ctx.key_released = [&Z, &Q, &S, &D, &imguiActive](const p6::Key& key) {
+        if (!imguiActive)
+        {
+            // ... votre code actuel de manipulation des touches
             if (key.physical == GLFW_KEY_W)
             {
                 Z = false;
@@ -200,12 +208,20 @@ int main(int argc, char* argv[])
             {
                 D = false;
             }
-        };
+        }
+    };
 
-        ctx.mouse_dragged = [&camera](const p6::MouseDrag& button) {
+    // ctx.mouse_dragged = [&camera](const p6::MouseDrag& button) {
+    //     camera.rotateLeft(button.delta.x * 50);
+    //     camera.rotateUp(-button.delta.y * 50);
+    // };
+
+    ctx.mouse_dragged = [&camera, &imguiActive](const p6::MouseDrag& button) {
+        if (!imguiActive)
+        {
             camera.rotateLeft(button.delta.x * 50);
             camera.rotateUp(-button.delta.y * 50);
-        };
+        }
     };
 
     // Should be done last. It starts the infinite loop.

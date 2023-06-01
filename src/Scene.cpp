@@ -1,5 +1,5 @@
 #include "Scene.hpp"
-#include <vcruntime.h>
+// #include <vcruntime.h>
 #include <vector>
 #include "FreeflyCamera.hpp"
 #include "GLBoid.hpp"
