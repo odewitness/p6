@@ -78,7 +78,8 @@ public:
                 }
 
                 mesh.vertices.push_back(vertex);
-                mesh.indices.push_back(mesh.indices.size());
+                // mesh.indices.push_back(mesh.indices.size());
+                mesh.indices.push_back(static_cast<std::vector<unsigned int>::value_type>(mesh.indices.size()));
             }
 
             if (!shape.mesh.material_ids.empty())

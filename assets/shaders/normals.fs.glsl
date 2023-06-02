@@ -1,8 +1,8 @@
 #version 330
 
-in vec3 vPosition_vs; // Position du sommet transformée dans l'espace View (vs)
-in vec3 vNormal_vs; // Normale du sommet transformée dans l'espace View (vs)
-in vec3 vColor; // Coordonnées de texture du sommet
+in vec3 vPosition_vs; 
+in vec3 vNormal_vs; 
+in vec3 vColor; 
 
 uniform vec3 uMaterialAmbient;
 uniform vec3 uMaterialDiffuse;
@@ -10,8 +10,8 @@ uniform vec3 uMaterialSpecular;
 uniform float uMaterialShininess;
 uniform int uUseShadow;
 
-uniform vec3 uSecondLightPosition;  // Direction de la seconde lumière
-uniform vec3 uSecondLightColor;      // Couleur de la seconde lumière
+uniform vec3 uSecondLightPosition;  
+uniform vec3 uSecondLightColor;     
 
 out vec4 fFragColor;
 
@@ -39,7 +39,7 @@ void main()
         float specularStrength = pow(max(dot(viewDirection, reflectDirection), 0.0), uMaterialShininess);
         vec3 specular = specularStrength * specularColor;
 
-         // Calcul de l'éclairage de la seconde lumière
+        // Calcul de l'éclairage de la seconde lumière
         vec3 secondLightDirection = normalize(uSecondLightPosition - vPosition_vs);
         float secondDiffuseStrength = max(dot(normal, secondLightDirection), 0.0);
         vec3 secondDiffuse = secondDiffuseStrength * uSecondLightColor;
@@ -50,7 +50,7 @@ void main()
     }
     else
     {
-        //// Utilisation de la normale comme couleur du fragment
+        // Utilisation de la normale comme couleur du fragment
         vec3 normal = normalize(vNormal_vs);
         if(vColor.x == 0 && vColor.y == 0 && vColor.z == 0)
         {
