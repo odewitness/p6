@@ -1,4 +1,5 @@
 #include "Skybox.hpp"
+#include <array>
 void Skybox::init()
 {
     float         limite_droite   = 5;

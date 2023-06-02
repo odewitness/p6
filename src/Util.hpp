@@ -108,7 +108,7 @@ public:
             // Création du Vertex Buffer Object (VBO) pour les sommets
             glGenBuffers(1, &vbo);
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBufferData(GL_ARRAY_BUFFER, mesh.vertices.size() * sizeof(Vertex), mesh.vertices.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(mesh.vertices.size() * sizeof(Vertex)), mesh.vertices.data(), GL_STATIC_DRAW);
 
             // Spécification des attributs de sommet
             glEnableVertexAttribArray(0); // Position du sommet
@@ -121,7 +121,8 @@ public:
             // Création du Index Buf 1fer Object (IBO) pour les indices
             glGenBuffers(1, &ibo);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned int), mesh.indices.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(mesh.indices.size() * sizeof(unsigned int)), mesh.indices.data(), GL_STATIC_DRAW);
+
             // Ajout du mesh à la liste des meshes
             meshes.push_back(mesh);
             vaoV.push_back(vao);
@@ -131,7 +132,7 @@ public:
         return meshes;
     }
 
-    static void render(std::vector<Mesh> meshes, const std::vector<GLuint>& vaoV, GLuint shader_id)
+    static void render(const std::vector<Mesh>& meshes, const std::vector<GLuint>& vaoV, GLuint shader_id)
     {
         // Rendu de chaque mesh
         int i = 0;
@@ -144,7 +145,8 @@ public:
             glUniform3fv(glGetUniformLocation(shader_id, "uMaterialDiffuse"), 1, glm::value_ptr(mesh.material.diffuse));
             glUniform3fv(glGetUniformLocation(shader_id, "uMaterialSpecular"), 1, glm::value_ptr(mesh.material.specular));
 
-            glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh.indices.size()), GL_UNSIGNED_INT, nullptr);
+
             glBindVertexArray(0);
         }
     }

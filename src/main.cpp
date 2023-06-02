@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 
     scene.set_boids(creation_boids(nombre_boids, upper_limit, lower_limit, left_limit, right_limit, size_boid, foreground_limit, background_limit));
 
-    scene.create_GLBoids(radius, segment_latitude, segment_longitude, scene.m_boids);
+    scene.create_GLBoids(segment_latitude, segment_longitude, scene.m_boids);
 
     bool imguiActive = false;
     // Paramètres IMGUI
@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
         {
             int  nombre_de_boids_a_ajouter = nombre_boids - size_boids_vecteur;
             auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, upper_limit, lower_limit, left_limit, right_limit, radius, foreground_limit, background_limit);
-            scene.add_boids(nouveaux_boids, radius, segment_latitude, segment_longitude);
+            scene.add_boids(nouveaux_boids, segment_latitude, segment_longitude);
         }
         else if (size_boids_vecteur > nombre_boids)
         {

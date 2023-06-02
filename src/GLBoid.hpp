@@ -19,7 +19,7 @@ public:
     Boid boid;
     GLBoid(Boid boid, size_t segment_latitude, size_t segment_longitude);
 
-    float get_radius();
+    float get_radius() const;
     void  set_radius(float radius);
 
     void init();

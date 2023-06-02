@@ -1,5 +1,6 @@
 #include "Scene.hpp"
 // #include <vcruntime.h>
+#include <array>
 #include <utility>
 #include <vector>
 #include "GLBoid.hpp"
@@ -39,9 +40,9 @@ int Scene::get_number_boids() const
     return static_cast<int>(m_boids.size());
 }
 
-void Scene::add_boids(std::vector<Boid>& boids, float radius, size_t segment_latitude, size_t segment_longitude)
+void Scene::add_boids(std::vector<Boid>& boids, size_t segment_latitude, size_t segment_longitude)
 {
-    create_GLBoids(radius, segment_latitude, segment_longitude, boids);
+    create_GLBoids(segment_latitude, segment_longitude, boids);
     m_boids.insert(m_boids.end(), boids.begin(), boids.end());
 }
 
@@ -51,7 +52,7 @@ void Scene::remove_boids(int nombre_de_boids_a_enlever)
     m_GLBoids.erase(m_GLBoids.end() - nombre_de_boids_a_enlever, m_GLBoids.end());
 }
 
-void Scene::create_GLBoids(float radius, size_t segment_latitude, size_t segment_longitude, std::vector<Boid>& boids)
+void Scene::create_GLBoids(size_t segment_latitude, size_t segment_longitude, std::vector<Boid>& boids)
 {
     for (auto& boid : boids)
     {
@@ -81,7 +82,7 @@ void Scene::init_scene()
 
 void Scene::draw(p6::Context& ctx, TrackballCamera& camera)
 {
-    GLfloat colors[3] = {1.f, 0.f, 0.0f};
+    std::array<GLfloat, 3> colors = {1.f, 0.f, 0.0f};
     m_shader.use();
 
     m_ProjMatrix   = glm::mat4(1.0f);
@@ -91,7 +92,7 @@ void Scene::draw(p6::Context& ctx, TrackballCamera& camera)
     m_ProjMatrix   = glm::perspective(glm::radians(70.0f), ctx.aspect_ratio(), 0.1f, 100.f);
     m_NormalMatrix = glm::transpose(glm::inverse(glm::mat3(m_MVMatrix)));
     m_MVMatrix     = camera.get_shifted_view_matrix();
-    m_MVMatrix     = glm::translate(m_MVMatrix, camera.get_position()); // Translation * Rotation * Translation
+    m_MVMatrix     = glm::translate(m_MVMatrix, camera.get_position());
 
     glUniformMatrix4fv(m_uMVPMatrix, 1, GL_FALSE, glm::value_ptr(m_ProjMatrix * m_MVMatrix));
     glUniformMatrix4fv(m_uMVMatrix, 1, GL_FALSE, glm::value_ptr(m_MVMatrix));
@@ -123,7 +124,7 @@ void Scene::draw(p6::Context& ctx, TrackballCamera& camera)
     for (auto& boid : m_GLBoids)
     {
         m_MVMatrix = glm::mat4(1.0f);
-        m_MVMatrix = glm::translate(m_MVMatrix, boid.boid.get_position()); // Translation * Rotation * Translation
+        m_MVMatrix = glm::translate(m_MVMatrix, boid.boid.get_position());
         m_MVMatrix = glm::scale(m_MVMatrix, glm::vec3{boid.get_radius()});
 
         glUniformMatrix4fv(m_uMVPMatrix, 1, GL_FALSE, glm::value_ptr(m_ProjMatrix * camera.get_view_matrix() * m_MVMatrix));

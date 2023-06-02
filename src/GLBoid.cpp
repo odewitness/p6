@@ -2,7 +2,7 @@
 #include "glimac/common.hpp"
 #include "glimac/sphere_vertices.hpp"
 
-float GLBoid::get_radius()
+float GLBoid::get_radius() const
 {
     return m_radius;
 }
