@@ -21,17 +21,15 @@ void Scene::Character::draw(GLuint shader_id)
 
 Scene::Character::~Character()
 {
-    for (auto& vbo : m_vbo)
-        glDeleteBuffers(1, &vbo);
-    for (auto& vao : m_vao)
-        glDeleteVertexArrays(1, &vao);
-    for (auto& ibo : m_ibo)
-        glDeleteVertexArrays(1, &ibo);
+    for (auto it = m_vbo.begin(); it != m_vbo.end(); ++it)
+    {
+        glDeleteBuffers(1, &(*it));
+    }
 }
 
-void Scene::set_boids(std::vector<Boid> boid)
+void Scene::set_boids(const std::vector<Boid>& boid)
 {
-    m_boids = std::move(boid);
+    m_boids = boid;
 }
 
 int Scene::get_number_boids() const

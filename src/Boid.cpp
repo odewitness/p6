@@ -20,8 +20,8 @@ void Boid::movement()
 
 bool Boid::bounce_if_out_of_limits()
 {
-    bool  hors_limite = true;
-    float rebond      = 0.5f;
+    bool  out_of_limit = true;
+    float rebond       = 0.5f;
 
     if (m_properties.position.y > m_properties.upper_limit - m_properties.size)
     {
@@ -29,7 +29,7 @@ bool Boid::bounce_if_out_of_limits()
         m_properties.direction.y = -m_properties.direction.y * rebond;
         m_properties.direction.x += rebond * (1 - std::abs(m_properties.direction.y));
         m_properties.direction.z += rebond * (1 - std::abs(m_properties.direction.y));
-        hors_limite = false;
+        out_of_limit = false;
     }
     else if (m_properties.position.y < m_properties.lower_limit + m_properties.size)
     {
@@ -37,7 +37,7 @@ bool Boid::bounce_if_out_of_limits()
         m_properties.direction.y = -m_properties.direction.y * rebond;
         m_properties.direction.x -= rebond * (1 - std::abs(m_properties.direction.y));
         m_properties.direction.z -= rebond * (1 - std::abs(m_properties.direction.y));
-        hors_limite = false;
+        out_of_limit = false;
     }
     if (m_properties.position.x > m_properties.right_limit - m_properties.size)
     {
@@ -45,7 +45,7 @@ bool Boid::bounce_if_out_of_limits()
         m_properties.direction.x = -m_properties.direction.x * rebond;
         m_properties.direction.y += rebond * (1 - std::abs(m_properties.direction.x));
         m_properties.direction.z += rebond * (1 - std::abs(m_properties.direction.x));
-        hors_limite = false;
+        out_of_limit = false;
     }
     else if (m_properties.position.x < m_properties.left_limit + m_properties.size)
     {
@@ -53,7 +53,7 @@ bool Boid::bounce_if_out_of_limits()
         m_properties.direction.x = -m_properties.direction.x * rebond;
         m_properties.direction.y -= rebond * (1 - std::abs(m_properties.direction.x));
         m_properties.direction.z -= rebond * (1 - std::abs(m_properties.direction.x));
-        hors_limite = false;
+        out_of_limit = false;
     }
     if (m_properties.position.z > m_properties.foreground_limit - m_properties.size)
     {
@@ -61,7 +61,7 @@ bool Boid::bounce_if_out_of_limits()
         m_properties.direction.z = -m_properties.direction.z * rebond;
         m_properties.direction.y += rebond * (1 - std::abs(m_properties.direction.x));
         m_properties.direction.x += rebond * (1 - std::abs(m_properties.direction.x));
-        hors_limite = false;
+        out_of_limit = false;
     }
     else if (m_properties.position.z < m_properties.left_limit + m_properties.size)
     {
@@ -69,11 +69,11 @@ bool Boid::bounce_if_out_of_limits()
         m_properties.direction.z = -m_properties.direction.z * rebond;
         m_properties.direction.y -= rebond * (1 - std::abs(m_properties.direction.x));
         m_properties.direction.x -= rebond * (1 - std::abs(m_properties.direction.x));
-        hors_limite = false;
+        out_of_limit = false;
     }
 
     m_properties.direction = glm::normalize(m_properties.direction);
-    return hors_limite;
+    return out_of_limit;
 }
 
 std::vector<Boid> creation_boids(int num_boids, float upper_limit, float lower_limit, float left_limit, float right_limit, float size_boid, float foreground_limit, float background_limit)

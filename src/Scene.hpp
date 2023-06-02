@@ -54,7 +54,7 @@ public:
 
     Scene() = default;
 
-    void set_boids(std::vector<Boid> boid);
+    void set_boids(const std::vector<Boid>& boid);
 
     int  get_number_boids() const;
     void add_boids(std::vector<Boid>& boids, size_t segment_latitude, size_t segment_longitude);
