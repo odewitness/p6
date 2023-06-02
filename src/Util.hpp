@@ -1,8 +1,4 @@
 #pragma once
-#include <tiny_obj_loader.h>
-#include <iostream>
-#include <ostream>
-#include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 
