@@ -16,6 +16,6 @@ class Skybox {
 public:
     Skybox() = default;
     void init();
-    void draw(GLuint shaderId, GLuint colorIndex);
+    void draw(GLuint shader_id, GLuint colorIndex);
     ~Skybox();
 };

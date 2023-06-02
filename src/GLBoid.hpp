@@ -7,8 +7,8 @@
 class GLBoid {
 private:
     float                            m_radius;
-    size_t                           m_segmentLatitude;
-    size_t                           m_segmentLongitude;
+    size_t                           m_segment_latitude;
+    size_t                           m_segment_longitude;
     std::vector<Mesh>                m_meshes;
     std::vector<GLuint>              m_vao;
     std::vector<GLuint>              m_vbo;
@@ -17,12 +17,12 @@ private:
 
 public:
     Boid boid;
-    GLBoid(Boid boid, size_t segmentLatitude, size_t segmentLongitude);
+    GLBoid(Boid boid, size_t segment_latitude, size_t segment_longitude);
 
-    float getRadius();
-    void  setRadius(float radius);
+    float get_radius();
+    void  set_radius(float radius);
 
     void init();
-    void deleteVertex();
-    void draw(GLuint shaderId);
+    void delete_vertex();
+    void draw(GLuint shader_id);
 };

@@ -2,7 +2,7 @@
 
 in vec3 vPosition_vs; // Position du sommet transformée dans l'espace View (vs)
 in vec3 vNormal_vs; // Normale du sommet transformée dans l'espace View (vs)
-in vec3 oColor; // Coordonnées de texture du sommet
+in vec3 vColor; // Coordonnées de texture du sommet
 
 uniform vec3 uMaterialAmbient;
 uniform vec3 uMaterialDiffuse;
@@ -52,13 +52,13 @@ void main()
     {
         //// Utilisation de la normale comme couleur du fragment
         vec3 normal = normalize(vNormal_vs);
-        if(oColor.x == 0 && oColor.y == 0 && oColor.z == 0)
+        if(vColor.x == 0 && vColor.y == 0 && vColor.z == 0)
         {
             fFragColor = vec4(normal*0.5+0.5, 1.0);
         }
         else
         {
-            fFragColor = vec4(oColor.x, oColor.y, oColor.z, 1.0);
+            fFragColor = vec4(vColor.x, vColor.y, vColor.z, 1.0);
         }
     }  
 }

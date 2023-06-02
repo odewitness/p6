@@ -35,80 +35,78 @@ int main(int argc, char* argv[])
     ctx.maximize_window();
 
     Scene scene;
-    scene.initScene();
+    scene.init_scene();
     // ------------------------------------------------------------------------------------s
     // ---------------------------------------------------------------
 
     // Paramètres
-    float limite_droite   = 5;
-    float limite_gauche   = -5;
-    float limite_haut     = 5;
-    float limite_bas      = -5;
-    float limite_devant   = 5;
-    float limite_derriere = -5;
-    int   nombre_boids    = 20;
-    float taille_boid     = 0.01f;
+    float right_limit      = 5;
+    float left_limit       = -5;
+    float upper_limit      = 5;
+    float lower_limit      = -5;
+    float foreground_limit = 5;
+    float background_limit = -5;
+    int   nombre_boids     = 20;
+    float size_boid        = 0.01f;
 
-    float cohesion_force   = 0.f;
-    float cohesion_rayon   = 1.f;
-    float alignement_force = 0.f;
-    float alignement_rayon = 1.f;
-    float separation_force = 0.f;
-    float separation_rayon = 1.f;
+    float cohesion_strength   = 0.f;
+    float cohesion_radius     = 1.f;
+    float alignment_strength  = 0.f;
+    float alignment_radius    = 1.f;
+    float separation_strength = 0.f;
+    float separation_radius   = 1.f;
 
-    float  radius           = 0.5f;
-    size_t segmentLatitude  = 32;
-    size_t segmentLongitude = 16;
+    float  radius            = 0.5f;
+    size_t segment_latitude  = 32;
+    size_t segment_longitude = 16;
 
-    scene.setBoids(creation_boids(nombre_boids, limite_haut, limite_bas, limite_gauche, limite_droite, taille_boid, limite_devant, limite_derriere));
+    scene.set_boids(creation_boids(nombre_boids, upper_limit, lower_limit, left_limit, right_limit, size_boid, foreground_limit, background_limit));
 
-    scene.createGLBoids(radius, segmentLatitude, segmentLongitude, scene.m_boids);
+    scene.create_GLBoids(radius, segment_latitude, segment_longitude, scene.m_boids);
 
-    bool imguiActive   = false;
-    bool etat_checkbox = false;
+    bool imguiActive = false;
     // Paramètres IMGUI
     ctx.imgui = [&]() {
         ImGui::Begin("Paramètres");
         imguiActive = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
         ImGui::Text("Configuration de l'affichage :");
         ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
-        ImGui::SliderFloat("Taille Boid", &radius, 0.01f, 0.8f);
-        ImGui::Checkbox("Limiter le nombre de boids en fonction de la taille", &etat_checkbox);
+        ImGui::SliderFloat("size Boid", &radius, 0.01f, 0.8f);
 
         ImGui::Separator();
         ImGui::Text("Configuration du comportement des Boids :");
         ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::CollapsingHeader("Cohésion"))
         {
-            ImGui::SliderFloat("Force de cohésion", &cohesion_force, 0.f, 0.3f);
-            ImGui::SliderFloat("Rayon de cohésion", &cohesion_rayon, 0.f, 3.0f);
+            ImGui::SliderFloat("strength de cohésion", &cohesion_strength, 0.f, 0.6f);
+            ImGui::SliderFloat("radius de cohésion", &cohesion_radius, 0.f, 5.0f);
         }
         ImGui::SetNextTreeNodeOpen(true);
-        if (ImGui::CollapsingHeader("Alignement"))
+        if (ImGui::CollapsingHeader("alignment"))
         {
-            ImGui::SliderFloat("Force d'alignement", &alignement_force, 0.0f, 0.3f);
-            ImGui::SliderFloat("Rayon d'alignement", &alignement_rayon, 0.0f, 3.0f);
+            ImGui::SliderFloat("strength d'alignment", &alignment_strength, 0.0f, 0.6f);
+            ImGui::SliderFloat("radius d'alignment", &alignment_radius, 0.0f, 5.0f);
         }
         ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::CollapsingHeader("Séparation"))
         {
-            ImGui::SliderFloat("Force de séparation", &separation_force, 0.0f, 0.3f);
-            ImGui::SliderFloat("Rayon de séparation", &separation_rayon, 0.0f, 3.0f);
+            ImGui::SliderFloat("strength de séparation", &separation_strength, 0.0f, 0.6f);
+            ImGui::SliderFloat("radius de séparation", &separation_radius, 0.0f, 5.0f);
         }
         ImGui::End();
 
         // Ajout et suppression des boids
-        int taille_boids_vecteur = scene.getNumberBoids(); // OK car taille max = 100 < taille max int
-        if (taille_boids_vecteur < nombre_boids)
+        int size_boids_vecteur = scene.get_number_boids(); // OK car size max = 100 < size max int
+        if (size_boids_vecteur < nombre_boids)
         {
-            int  nombre_de_boids_a_ajouter = nombre_boids - taille_boids_vecteur;
-            auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, limite_haut, limite_bas, limite_gauche, limite_droite, radius, limite_devant, limite_derriere);
-            scene.addBoids(nouveaux_boids, radius, segmentLatitude, segmentLongitude);
+            int  nombre_de_boids_a_ajouter = nombre_boids - size_boids_vecteur;
+            auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, upper_limit, lower_limit, left_limit, right_limit, radius, foreground_limit, background_limit);
+            scene.add_boids(nouveaux_boids, radius, segment_latitude, segment_longitude);
         }
-        else if (taille_boids_vecteur > nombre_boids)
+        else if (size_boids_vecteur > nombre_boids)
         {
-            int nombre_de_boids_a_enlever = taille_boids_vecteur - nombre_boids;
-            scene.removeBoids(nombre_de_boids_a_enlever);
+            int nombre_de_boids_a_enlever = size_boids_vecteur - nombre_boids;
+            scene.remove_boids(nombre_de_boids_a_enlever);
         }
     };
 
@@ -124,43 +122,43 @@ int main(int argc, char* argv[])
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (Z)
         {
-            camera.moveFront(0.1);
+            camera.move_front(0.1);
         }
         if (Q)
         {
-            camera.rotateLeft(-0.3);
+            camera.rotate_left(-0.3);
         }
         if (S)
         {
-            camera.moveFront(-0.1);
+            camera.move_front(-0.1);
         }
         if (D)
         {
-            camera.rotateLeft(0.3);
+            camera.rotate_left(0.3);
         }
-        if (camera.getPosition().z < -limite_devant || camera.getPosition().z > -limite_derriere)
+        if (camera.get_position().z < -foreground_limit || camera.get_position().z > -background_limit)
         {
             if (Z)
             {
-                camera.moveFront(-0.1);
+                camera.move_front(-0.1);
             }
             if (S)
             {
-                camera.moveFront(0.1);
+                camera.move_front(0.1);
             }
         }
 
-        for (auto& boid : scene.m_GLboids)
+        for (auto& boid : scene.m_GLBoids)
         {
-            boid.setRadius(radius);
+            boid.set_radius(radius);
         }
 
         scene.draw(ctx, camera);
 
         // Dessin de la sphère
-        for (auto& boid : scene.m_GLboids)
+        for (auto& boid : scene.m_GLBoids)
         {
-            boid.boid.update(radius, ctx, scene.m_boids, cohesion_rayon, cohesion_force, alignement_rayon, alignement_force, separation_rayon, separation_force);
+            boid.boid.update(radius, ctx, scene.m_boids, cohesion_radius, cohesion_strength, alignment_radius, alignment_strength, separation_radius, separation_strength);
         }
     };
 
@@ -213,12 +211,12 @@ int main(int argc, char* argv[])
     ctx.mouse_dragged = [&camera, &imguiActive](const p6::MouseDrag& button) {
         if (!imguiActive)
         {
-            camera.rotateLeft(button.delta.x * 50);
-            camera.rotateUp(-button.delta.y * 50);
+            camera.rotate_left(button.delta.x * 50);
+            camera.rotate_up(-button.delta.y * 50);
         }
     };
 
     // Should be done last. It starts the infinite loop.
     ctx.start();
-    scene.deleteGLBoidsBuffer();
+    scene.delete_GLBoids_buffer();
 }

@@ -1,48 +1,50 @@
 #include "TrackballCamera.hpp"
-#include <iostream>
 #include "glm/gtx/transform.hpp"
 #include "glm/trigonometric.hpp"
 
-TrackballCamera::TrackballCamera(float Distance, float AngleX, float AngleY)
-    : m_Distance(Distance), m_AngleX(AngleX), m_AngleY(AngleY) {}
+TrackballCamera::TrackballCamera(float distance, float angle_x, float angle_y)
+    : m_distance(distance), m_angle_x(angle_x), m_angle_Y(angle_y) {}
 
-void TrackballCamera::moveFront(float delta)
+void TrackballCamera::move_front(float delta)
 {
-    m_Distance += delta;
+    m_distance += delta;
 }
 
-void TrackballCamera::rotateLeft(float degrees)
+void TrackballCamera::rotate_left(float degrees)
 {
-    m_AngleX += glm::radians(degrees);
+    m_angle_x += glm::radians(degrees);
 }
 
-void TrackballCamera::rotateUp(float degrees)
+void TrackballCamera::rotate_up(float degrees)
 {
-    m_AngleY += glm::radians(degrees);
+    m_angle_Y += glm::radians(degrees);
 }
 
-void TrackballCamera::moveLeft(float t)
+void TrackballCamera::move_left(float t)
 {
     m_left += t;
 }
 
-glm::vec3 TrackballCamera::getPosition()
+glm::vec3 TrackballCamera::get_position()
 {
-    return glm::vec3(0.f, 0.f, -m_Distance);
+    const float x = 0.0f;
+    const float y = 0.0f;
+    const float z = -m_distance;
+    return glm::vec3(x, y, z);
 }
 
-glm::mat4 TrackballCamera::getViewMatrix() const
+glm::mat4 TrackballCamera::get_view_matrix() const
 {
-    glm::mat4 viewMatrix(1.f);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, m_Distance));
-    viewMatrix = glm::rotate(viewMatrix, m_AngleY, glm::vec3(1.f, 0.f, 0.f));
-    viewMatrix = glm::rotate(viewMatrix, m_AngleX, glm::vec3(0.f, 1.f, 0.f));
-    return viewMatrix;
+    glm::mat4 view_matrix(1.f);
+    view_matrix = glm::translate(view_matrix, glm::vec3(0.f, 0.f, m_distance));
+    view_matrix = glm::rotate(view_matrix, m_angle_Y, glm::vec3(1.f, 0.f, 0.f));
+    view_matrix = glm::rotate(view_matrix, m_angle_x, glm::vec3(0.f, 1.f, 0.f));
+    return view_matrix;
 }
 
-glm::mat4 TrackballCamera::getShiftedViewMatrix() const
+glm::mat4 TrackballCamera::get_shifted_view_matrix() const
 {
-    glm::mat4 viewMatrix(1.f);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, m_Distance));
-    return viewMatrix;
+    glm::mat4 view_matrix(1.f);
+    view_matrix = glm::translate(view_matrix, glm::vec3(0.f, 0.f, m_distance));
+    return view_matrix;
 }

@@ -6,29 +6,28 @@
 struct BoidProperties {
     glm::vec3 position;
     glm::vec3 direction;
-    float     vitesse;
-    float     taille;
-    float     limite_haut;
-    float     limite_bas;
-    float     limite_gauche;
-    float     limite_droite;
-    float     limite_devant;
-    float     limite_derriere;
+    float     speed;
+    float     size;
+    float     upper_limit;
+    float     lower_limit;
+    float     left_limit;
+    float     right_limit;
+    float     foreground_limit;
+    float     background_limit;
     glm::vec3 color;
 };
 
 class Boid {
 private:
-    // glm::vec3      m_position;
     glm::vec3      m_direction;
-    float          m_vitesse;
-    float          m_taille;
-    float          m_limite_haut;
-    float          m_limite_bas;
-    float          m_limite_gauche;
-    float          m_limite_droite;
-    float          m_limite_devant;
-    float          m_limite_derriere;
+    float          m_speed;
+    float          m_size;
+    float          m_upper_limit;
+    float          m_lower_limit;
+    float          m_left_limit;
+    float          m_right_limit;
+    float          m_foreground_limit;
+    float          m_background_limit;
     float          m_radius;
     glm::vec3      m_color;
     BoidProperties m_properties;
@@ -37,19 +36,19 @@ public:
     Boid();
     explicit Boid(const BoidProperties& properties);
 
-    void update(const float& taille_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force, const float& alignement_rayon, const float& alignement_force, const float& separation_rayon, const float& separation_force);
+    void update(const float& size_boid, p6::Context& ctx, std::vector<Boid>& boids, const float& cohesion_radius, const float& cohesion_strength, const float& alignment_radius, const float& alignment_strength, const float& separation_radius, const float& separation_strength);
 
-    glm::vec3 get_position();
+    glm::vec3 get_position() const;
 
 private:
-    void set_taille(float taille);
+    void set_size(float size);
 
-    void separation(std::vector<Boid>& boids, const float& separation_rayon, const float& separation_force);
-    void cohesion(std::vector<Boid>& boids, const float& cohesion_rayon, const float& cohesion_force);
-    void alignement(std::vector<Boid>& boids, const float& alignement_rayon, const float& alignement_force);
+    void separation(std::vector<Boid>& boids, const float& separation_radius, const float& separation_strength);
+    void cohesion(std::vector<Boid>& boids, const float& cohesion_radius, const float& cohesion_strength);
+    void alignment(std::vector<Boid>& boids, const float& alignment_radius, const float& alignment_strength);
 
-    bool rebondir_si_hors_limite();
-    void mouvement();
+    bool bounce_if_out_of_limits();
+    void movement();
 };
 
-std::vector<Boid> creation_boids(int num_boids, float limite_haut, float limite_bas, float limite_gauche, float limite_droite, float taille_boid, float limite_devant, float limite_derriere);
+std::vector<Boid> creation_boids(int num_boids, float upper_limit, float lower_limit, float left_limit, float right_limit, float size_boid, float foreground_limit, float background_limit);

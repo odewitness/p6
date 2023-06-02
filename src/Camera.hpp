@@ -4,10 +4,10 @@
 class Camera {
 private:
 public:
-    virtual glm::mat4 getViewMatrix() const     = 0;
-    virtual void      moveFront(float delta)    = 0;
-    virtual void      rotateLeft(float degrees) = 0;
-    virtual void      rotateUp(float degrees)   = 0;
-    virtual void      moveLeft(float t)         = 0;
-    virtual glm::vec3 getPosition()             = 0;
+    virtual glm::mat4 get_view_matrix() const    = 0;
+    virtual void      move_front(float delta)    = 0;
+    virtual void      rotate_left(float degrees) = 0;
+    virtual void      rotate_up(float degrees)   = 0;
+    virtual void      move_left(float t)         = 0;
+    virtual glm::vec3 get_position()             = 0;
 };

@@ -14,12 +14,11 @@ private:
     glm::mat4 m_ProjMatrix;
     glm::mat4 m_MVMatrix;
     glm::mat4 m_NormalMatrix;
-    glm::vec3 m_colorVec;
 
     GLuint m_uMVPMatrix;
     GLuint m_uMVMatrix;
     GLuint m_uNormalMatrix;
-    GLuint m_color;
+    GLuint m_uColor;
     GLuint m_uSecondLightPosition;
     GLuint m_uSecondLightColor;
     GLuint m_uUseShadow;
@@ -33,39 +32,39 @@ private:
         "assets/shaders/normals.fs.glsl"
     );
 
-    class Personnage {
+    class Character {
         std::vector<Mesh>   m_meshes;
         std::vector<GLuint> m_vao;
         std::vector<GLuint> m_vbo;
         std::vector<GLuint> m_ibo;
 
     public:
-        Personnage() = default;
+        Character() = default;
         void init();
-        void draw(GLuint shaderId);
-        ~Personnage();
+        void draw(GLuint shader_id);
+        ~Character();
     };
 
-    Skybox     m_bordures;
-    Personnage m_personnage;
+    Skybox    m_skybox;
+    Character m_character;
 
 public:
-    std::vector<GLBoid> m_GLboids;
+    std::vector<GLBoid> m_GLBoids;
     std::vector<Boid>   m_boids;
 
     Scene() = default;
 
-    void setBoids(std::vector<Boid> boid);
+    void set_boids(std::vector<Boid> boid);
 
-    int  getNumberBoids();
-    void addBoids(std::vector<Boid>& boids, float radius, size_t segmentLatitude, size_t segmentLongitude);
-    void removeBoids(int nombre_de_boids_a_enlever);
+    int  get_number_boids() const;
+    void add_boids(std::vector<Boid>& boids, float radius, size_t segment_latitude, size_t segment_longitude);
+    void remove_boids(int nombre_de_boids_a_enlever);
 
-    void createGLBoids(float radius, size_t segmentLatitude, size_t segmentLongitude, std::vector<Boid> boids);
+    void create_GLBoids(float radius, size_t segment_latitude, size_t segment_longitude, std::vector<Boid> boids);
 
     void draw(p6::Context& ctx, TrackballCamera& camera);
 
-    void initScene();
+    void init_scene();
 
-    void deleteGLBoidsBuffer();
+    void delete_GLBoids_buffer();
 };

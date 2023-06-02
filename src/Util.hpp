@@ -23,7 +23,7 @@ struct Mesh {
 
 class Util {
 public:
-    static std::vector<Mesh> load(std::vector<GLuint>& vaoV, std::vector<GLuint>& vboV, std::vector<GLuint>& iboV, std::string inputfile, std::string base_dir)
+    static std::vector<Mesh> load(std::vector<GLuint>& vaoV, std::vector<GLuint>& vboV, std::vector<GLuint>& iboV, std::string input_file, std::string base_directory)
     {
         std::vector<Mesh>                meshes;
         tinyobj::attrib_t                attrib;
@@ -32,7 +32,7 @@ public:
 
         std::string err;
         std::string warn;
-        bool        ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, inputfile.c_str(), base_dir.c_str());
+        bool        ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, input_file.c_str(), base_directory.c_str());
 
         if (!err.empty())
         {
@@ -128,7 +128,7 @@ public:
         return meshes;
     }
 
-    static void render(std::vector<Mesh> meshes, const std::vector<GLuint>& vaoV, GLuint shaderId)
+    static void render(std::vector<Mesh> meshes, const std::vector<GLuint>& vaoV, GLuint shader_id)
     {
         // Rendu de chaque mesh
         int i = 0;
@@ -137,9 +137,9 @@ public:
             glBindVertexArray(vaoV[i]);
 
             // Envoi des couleurs du matériau au shader
-            glUniform3fv(glGetUniformLocation(shaderId, "uMaterialAmbient"), 1, glm::value_ptr(mesh.material.ambient));
-            glUniform3fv(glGetUniformLocation(shaderId, "uMaterialDiffuse"), 1, glm::value_ptr(mesh.material.diffuse));
-            glUniform3fv(glGetUniformLocation(shaderId, "uMaterialSpecular"), 1, glm::value_ptr(mesh.material.specular));
+            glUniform3fv(glGetUniformLocation(shader_id, "uMaterialAmbient"), 1, glm::value_ptr(mesh.material.ambient));
+            glUniform3fv(glGetUniformLocation(shader_id, "uMaterialDiffuse"), 1, glm::value_ptr(mesh.material.diffuse));
+            glUniform3fv(glGetUniformLocation(shader_id, "uMaterialSpecular"), 1, glm::value_ptr(mesh.material.specular));
 
             glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);

@@ -4,20 +4,20 @@
 #include "Camera.hpp"
 class TrackballCamera : public Camera {
 private:
-    float m_Distance;
-    float m_AngleX;
-    float m_AngleY;
+    float m_distance;
+    float m_angle_x;
+    float m_angle_Y;
     float m_left = 0.;
 
 public:
-    explicit TrackballCamera(float Distance = 0.f, float AngleX = 0, float AngleY = 0);
+    explicit TrackballCamera(float distance = 0.f, float angle_x = 0, float angle_y = 0);
 
-    void      moveFront(float delta) override;
-    void      rotateLeft(float degrees) override;
-    void      rotateUp(float degrees) override;
-    void      moveLeft(float t) override;
-    glm::vec3 getPosition() override;
+    void      move_front(float delta) override;
+    void      rotate_left(float degrees) override;
+    void      rotate_up(float degrees) override;
+    void      move_left(float t) override;
+    glm::vec3 get_position() override;
 
-    glm::mat4 getViewMatrix() const override;
-    glm::mat4 getShiftedViewMatrix() const;
+    glm::mat4 get_view_matrix() const override;
+    glm::mat4 get_shifted_view_matrix() const;
 };

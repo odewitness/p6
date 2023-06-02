@@ -143,12 +143,12 @@ void Skybox::init()
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    std::string inputfile = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/Coral2.obj";
-    std::string base_dir  = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/";
-    m_meshes              = Util::load(m_vaoAlgues, m_vboAlgues, m_iboAlgues, inputfile, base_dir);
+    std::string input_file     = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/Coral2.obj";
+    std::string base_directory = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/";
+    m_meshes                   = Util::load(m_vaoAlgues, m_vboAlgues, m_iboAlgues, input_file, base_directory);
 }
 
-void Skybox::draw(GLuint shaderId, GLuint colorIndex)
+void Skybox::draw(GLuint shader_id, GLuint colorIndex)
 {
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, 4 * 3);
@@ -161,7 +161,7 @@ void Skybox::draw(GLuint shaderId, GLuint colorIndex)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform3f(colorIndex, 0.3765f, 0.4235f, 0.2196f);
-    Util::render(m_meshes, m_vaoAlgues, shaderId);
+    Util::render(m_meshes, m_vaoAlgues, shader_id);
 }
 
 Skybox::~Skybox()
