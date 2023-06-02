@@ -36,7 +36,7 @@ void Scene::set_boids(std::vector<Boid> boid)
 
 int Scene::get_number_boids() const
 {
-    return m_boids.size();
+    return static_cast<int>(m_boids.size());
 }
 
 void Scene::add_boids(std::vector<Boid>& boids, float radius, size_t segment_latitude, size_t segment_longitude)
@@ -51,11 +51,11 @@ void Scene::remove_boids(int nombre_de_boids_a_enlever)
     m_GLBoids.erase(m_GLBoids.end() - nombre_de_boids_a_enlever, m_GLBoids.end());
 }
 
-void Scene::create_GLBoids(float radius, size_t segment_latitude, size_t segment_longitude, std::vector<Boid> boids)
+void Scene::create_GLBoids(float radius, size_t segment_latitude, size_t segment_longitude, std::vector<Boid>& boids)
 {
     for (auto& boid : boids)
     {
-        m_GLBoids.emplace_back(GLBoid(boid, segment_latitude, segment_longitude));
+        m_GLBoids.emplace_back(boid, segment_latitude, segment_longitude);
     }
 }
 

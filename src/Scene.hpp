@@ -60,7 +60,7 @@ public:
     void add_boids(std::vector<Boid>& boids, float radius, size_t segment_latitude, size_t segment_longitude);
     void remove_boids(int nombre_de_boids_a_enlever);
 
-    void create_GLBoids(float radius, size_t segment_latitude, size_t segment_longitude, std::vector<Boid> boids);
+    void create_GLBoids(float radius, size_t segment_latitude, size_t segment_longitude, std::vector<Boid>& boids);
 
     void draw(p6::Context& ctx, TrackballCamera& camera);
 

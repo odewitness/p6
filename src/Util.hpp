@@ -1,7 +1,10 @@
 #pragma once
 #include <tiny_obj_loader.h>
+#include <iostream>
+#include <ostream>
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "p6/p6.h"
 
 struct Vertex {
     glm::vec3 position;
@@ -18,12 +21,12 @@ struct Material {
 struct Mesh {
     std::vector<Vertex>       vertices;
     std::vector<unsigned int> indices;
-    Material                  material;
+    Material                  material{};
 };
 
 class Util {
 public:
-    static std::vector<Mesh> load(std::vector<GLuint>& vaoV, std::vector<GLuint>& vboV, std::vector<GLuint>& iboV, std::string input_file, std::string base_directory)
+    static std::vector<Mesh> load(std::vector<GLuint>& vaoV, std::vector<GLuint>& vboV, std::vector<GLuint>& iboV, const std::string& input_file, const std::string& base_directory)
     {
         std::vector<Mesh>                meshes;
         tinyobj::attrib_t                attrib;
@@ -49,7 +52,7 @@ public:
             // Parcours des faces du modèle
             for (const auto& index : shape.mesh.indices)
             {
-                Vertex vertex;
+                Vertex vertex{};
 
                 vertex.position = glm::vec3(
                     attrib.vertices[3 * index.vertex_index + 0],
@@ -78,7 +81,7 @@ public:
                 mesh.indices.push_back(mesh.indices.size());
             }
 
-            if (shape.mesh.material_ids.size() > 0)
+            if (!shape.mesh.material_ids.empty())
             {
                 if (shape.mesh.material_ids[0] == -1)
                 {
