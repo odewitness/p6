@@ -15,8 +15,8 @@ void GLBoid::set_radius(float radius)
 GLBoid::GLBoid(Boid boid, size_t segment_latitude, size_t segment_longitude)
     : boid(boid), m_segment_latitude(segment_latitude), m_segment_longitude(segment_longitude)
 {
-    std::string input_file     = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/shell.obj";
-    std::string base_directory = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/";
+    std::string input_file     = "assets/shell.obj";
+    std::string base_directory = "assets/";
     m_meshes                   = Util::load(m_vao, m_vbo, m_ibo, input_file, base_directory);
 };
 

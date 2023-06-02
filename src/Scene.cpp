@@ -1,5 +1,4 @@
 #include "Scene.hpp"
-// #include <vcruntime.h>
 #include <array>
 #include <utility>
 #include <vector>
@@ -10,8 +9,8 @@
 
 void Scene::Character::init()
 {
-    std::string input_file     = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/Fish.obj";
-    std::string base_directory = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/";
+    std::string input_file     = "assets/Fish.obj";
+    std::string base_directory = "assets/";
     m_meshes                   = Util::load(m_vao, m_vbo, m_ibo, input_file, base_directory);
 }
 

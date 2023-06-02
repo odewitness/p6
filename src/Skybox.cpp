@@ -144,8 +144,8 @@ void Skybox::init()
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    std::string input_file     = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/Coral2.obj";
-    std::string base_directory = "C:/Users/audep/Downloads/IMACCours/IMAC2/ProgrammationObjet/p6/assets/";
+    std::string input_file     = "assets/Coral2.obj";
+    std::string base_directory = "assets/";
     m_meshes                   = Util::load(m_vaoAlgues, m_vboAlgues, m_iboAlgues, input_file, base_directory);
 }
 
