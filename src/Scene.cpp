@@ -59,7 +59,6 @@ void Scene::create_GLBoids(size_t segment_latitude, size_t segment_longitude, st
 
 void Scene::init_scene()
 {
-    // ------------- RÉCUPÉRATION DES LOCATIONS DES VARIABLES UNIFORMES -------------------
     m_uMVPMatrix           = glGetUniformLocation(m_shader.id(), "uMVPMatrix");
     m_uMVMatrix            = glGetUniformLocation(m_shader.id(), "uMVMatrix");
     m_uNormalMatrix        = glGetUniformLocation(m_shader.id(), "uNormalMatrix");
