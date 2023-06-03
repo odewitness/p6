@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     float lower_limit      = -5;
     float foreground_limit = 5;
     float background_limit = -5;
-    int   nombre_boids     = 20;
+    int   number_boids     = 20;
     float size_boid        = 0.01f;
 
     float cohesion_strength   = 0.f;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
     size_t segment_latitude  = 32;
     size_t segment_longitude = 16;
 
-    scene.set_boids(creation_boids(nombre_boids, upper_limit, lower_limit, left_limit, right_limit, size_boid, foreground_limit, background_limit));
+    scene.set_boids(creation_boids(number_boids, upper_limit, lower_limit, left_limit, right_limit, size_boid, foreground_limit, background_limit));
 
     scene.create_GLBoids(segment_latitude, segment_longitude, scene.m_boids);
 
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
         ImGui::Begin("Paramètres");
         imguiActive = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
         ImGui::Text("Configuration de l'affichage :");
-        ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
+        ImGui::SliderInt("Nombre de boids", &number_boids, 0, 100);
         ImGui::SliderFloat("Taille des boids", &radius, 0.01f, 0.8f);
 
         ImGui::Separator();
@@ -96,15 +96,15 @@ int main(int argc, char* argv[])
 
         // Ajout et suppression des boids
         int size_boids_vector = scene.get_number_boids(); // OK car size max = 100 < size max int
-        if (size_boids_vector < nombre_boids)
+        if (size_boids_vector < number_boids)
         {
-            int  number_boids_to_add = nombre_boids - size_boids_vector;
+            int  number_boids_to_add = number_boids - size_boids_vector;
             auto nouveaux_boids      = creation_boids(number_boids_to_add, upper_limit, lower_limit, left_limit, right_limit, radius, foreground_limit, background_limit);
             scene.add_boids(nouveaux_boids, segment_latitude, segment_longitude);
         }
-        else if (size_boids_vector > nombre_boids)
+        else if (size_boids_vector > number_boids)
         {
-            int number_boids_to_remove = size_boids_vector - nombre_boids;
+            int number_boids_to_remove = size_boids_vector - number_boids;
             scene.remove_boids(number_boids_to_remove);
         }
     };
