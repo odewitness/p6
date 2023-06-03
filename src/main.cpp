@@ -70,42 +70,42 @@ int main(int argc, char* argv[])
         imguiActive = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
         ImGui::Text("Configuration de l'affichage :");
         ImGui::SliderInt("Nombre de boids", &nombre_boids, 0, 100);
-        ImGui::SliderFloat("size Boid", &radius, 0.01f, 0.8f);
+        ImGui::SliderFloat("Taille des boids", &radius, 0.01f, 0.8f);
 
         ImGui::Separator();
-        ImGui::Text("Configuration du comportement des Boids :");
+        ImGui::Text("Configuration du comportement des boids :");
         ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::CollapsingHeader("Cohésion"))
         {
-            ImGui::SliderFloat("strength de cohésion", &cohesion_strength, 0.f, 0.6f);
-            ImGui::SliderFloat("radius de cohésion", &cohesion_radius, 0.f, 5.0f);
+            ImGui::SliderFloat("Force de cohésion", &cohesion_strength, 0.f, 0.6f);
+            ImGui::SliderFloat("Rayon de cohésion", &cohesion_radius, 0.f, 5.0f);
         }
         ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::CollapsingHeader("alignment"))
         {
-            ImGui::SliderFloat("strength d'alignment", &alignment_strength, 0.0f, 0.6f);
-            ImGui::SliderFloat("radius d'alignment", &alignment_radius, 0.0f, 5.0f);
+            ImGui::SliderFloat("Force d'alignment", &alignment_strength, 0.0f, 0.6f);
+            ImGui::SliderFloat("Rayon d'alignment", &alignment_radius, 0.0f, 5.0f);
         }
         ImGui::SetNextTreeNodeOpen(true);
         if (ImGui::CollapsingHeader("Séparation"))
         {
-            ImGui::SliderFloat("strength de séparation", &separation_strength, 0.0f, 0.6f);
-            ImGui::SliderFloat("radius de séparation", &separation_radius, 0.0f, 5.0f);
+            ImGui::SliderFloat("Force de séparation", &separation_strength, 0.0f, 0.6f);
+            ImGui::SliderFloat("Rayon de séparation", &separation_radius, 0.0f, 5.0f);
         }
         ImGui::End();
 
         // Ajout et suppression des boids
-        int size_boids_vecteur = scene.get_number_boids(); // OK car size max = 100 < size max int
-        if (size_boids_vecteur < nombre_boids)
+        int size_boids_vector = scene.get_number_boids(); // OK car size max = 100 < size max int
+        if (size_boids_vector < nombre_boids)
         {
-            int  nombre_de_boids_a_ajouter = nombre_boids - size_boids_vecteur;
-            auto nouveaux_boids            = creation_boids(nombre_de_boids_a_ajouter, upper_limit, lower_limit, left_limit, right_limit, radius, foreground_limit, background_limit);
+            int  number_boids_to_add = nombre_boids - size_boids_vector;
+            auto nouveaux_boids      = creation_boids(number_boids_to_add, upper_limit, lower_limit, left_limit, right_limit, radius, foreground_limit, background_limit);
             scene.add_boids(nouveaux_boids, segment_latitude, segment_longitude);
         }
-        else if (size_boids_vecteur > nombre_boids)
+        else if (size_boids_vector > nombre_boids)
         {
-            int nombre_de_boids_a_enlever = size_boids_vecteur - nombre_boids;
-            scene.remove_boids(nombre_de_boids_a_enlever);
+            int number_boids_to_remove = size_boids_vector - nombre_boids;
+            scene.remove_boids(number_boids_to_remove);
         }
     };
 
